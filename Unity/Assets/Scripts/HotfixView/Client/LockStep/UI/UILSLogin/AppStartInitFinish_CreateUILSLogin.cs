@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+	/// <summary>
+	/// 帧同步-App开始创建Login UI
+	/// </summary>
 	[Event(SceneType.LockStep)]
 	public class AppStartInitFinish_CreateUILSLogin: AEvent<Scene, AppStartInitFinish>
 	{

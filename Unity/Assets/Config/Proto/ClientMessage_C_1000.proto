@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package ET;
 
+//客户端内部通讯消息
+
 // ResponseType NetClient2Main_Login
 message Main2NetClient_Login // IRequest
 {

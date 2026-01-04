@@ -48,7 +48,9 @@ namespace ET
             CodeTypes.Instance.CreateCode();
             
             await World.Instance.AddSingleton<ConfigLoader>().LoadAsync();
-
+            
+            Log.Info($"pxq--Entry--Start--");
+            
             await FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
         }
     }

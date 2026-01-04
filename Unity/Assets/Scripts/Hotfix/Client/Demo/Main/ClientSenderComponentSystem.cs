@@ -45,7 +45,12 @@ namespace ET.Client
             main2NetClientLogin.OwnerFiberId = self.Fiber().Id;
             main2NetClientLogin.Account = account;
             main2NetClientLogin.Password = password;
+            
+            Log.Info($"pxq--Client Login--request---name:{account}--pwd:{password}");
+            
             NetClient2Main_Login response = await self.Root().GetComponent<ProcessInnerSender>().Call(self.netClientActorId, main2NetClientLogin) as NetClient2Main_Login;
+            
+            Log.Info($"pxq--Client Login--response---playerId:{response.PlayerId}--msg:{response.Message}");
             return response.PlayerId;
         }
 

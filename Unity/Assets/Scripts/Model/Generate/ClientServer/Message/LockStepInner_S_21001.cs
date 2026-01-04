@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    // 服务器帧同步内部通讯消息
     /// <summary>
     /// 请求匹配
     /// </summary>

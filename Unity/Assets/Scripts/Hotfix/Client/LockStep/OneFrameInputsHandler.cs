@@ -2,6 +2,9 @@ using System;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-单帧输出逻辑处理
+    /// </summary>
     [MessageHandler(SceneType.LockStep)]
     public class OneFrameInputsHandler: MessageHandler<Scene, OneFrameInputs>
     {

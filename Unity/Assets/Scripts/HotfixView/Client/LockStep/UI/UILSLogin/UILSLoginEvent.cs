@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    
+    /// <summary>
+    /// 帧同步-加载UILSLogin.Prefab UI
+    /// </summary>
     [UIEvent(UIType.UILSLogin)]
     public class UILSLoginEvent: AUIEvent
     {

@@ -13,7 +13,7 @@ namespace ET.Client
                 
                 // 等待场景切换完成
                 await root.GetComponent<ObjectWait>().Wait<Wait_SceneChangeFinish>();
-                
+                Log.Info($"pxq--EnterMapHelper--EnterMap---");
                 EventSystem.Instance.Publish(root, new EnterMapFinish());
             }
             catch (Exception e)
@@ -26,6 +26,7 @@ namespace ET.Client
         {
             try
             {
+                Log.Info($"pxq--EnterMapHelper--Match---");
                 G2C_Match g2CEnterMap = await fiber.Root.GetComponent<ClientSenderComponent>().Call(C2G_Match.Create()) as G2C_Match;
             }
             catch (Exception e)

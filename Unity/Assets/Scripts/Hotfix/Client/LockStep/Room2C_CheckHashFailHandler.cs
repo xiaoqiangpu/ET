@@ -1,5 +1,8 @@
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-检查哈希值失败处理逻辑
+    /// </summary>
     [MessageHandler(SceneType.LockStep)]
     public class Room2C_CheckHashFailHandler: MessageHandler<Scene, Room2C_CheckHashFail>
     {

@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+    /// <summary>
+    /// Create/Remove UI
+    /// </summary>
     public static class UIHelper
     {
         [EnableAccessEntiyChild]

@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// UI-大厅（匹配）组件系统
+    /// </summary>
     [EntitySystemOf(typeof(UILobbyComponent))]
     [FriendOf(typeof(UILobbyComponent))]
     public static partial class UILobbyComponentSystem
@@ -19,6 +22,7 @@ namespace ET.Client
         public static async ETTask EnterMap(this UILobbyComponent self)
         {
             Scene root = self.Root();
+            Log.Info($"pxq--点击大厅匹配--开始进入地图");
             await EnterMapHelper.EnterMapAsync(root);
             await UIHelper.Remove(root, UIType.UILobby);
         }

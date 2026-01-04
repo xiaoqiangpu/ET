@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    // 客户端与服务器内部通讯消息
     [MemoryPackable]
     [Message(OuterMessage.HttpGetRouterResponse)]
     public partial class HttpGetRouterResponse : MessageObject

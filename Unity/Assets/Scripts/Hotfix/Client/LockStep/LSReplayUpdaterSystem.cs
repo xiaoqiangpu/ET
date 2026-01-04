@@ -2,6 +2,9 @@ using System;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-回放更新系统
+    /// </summary>
     [EntitySystemOf(typeof(LSReplayUpdater))]
     [FriendOf(typeof(LSReplayUpdater))]
     public static partial class LSReplayUpdaterSystem

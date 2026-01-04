@@ -1,5 +1,9 @@
 namespace ET.Client
 {
+    
+    /// <summary>
+    /// 帧同步-调整更新时间
+    /// </summary>
     [MessageHandler(SceneType.LockStep)]
     public class Room2C_AdjustUpdateTimeHandler: MessageHandler<Scene, Room2C_AdjustUpdateTime>
     {

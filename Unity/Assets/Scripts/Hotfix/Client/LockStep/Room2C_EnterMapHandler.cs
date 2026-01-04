@@ -1,5 +1,7 @@
 namespace ET.Client
 {
+    
+    
     [MessageHandler(SceneType.LockStep)]
     public class Room2C_EnterMapHandler: MessageHandler<Scene, Room2C_Start>
     {

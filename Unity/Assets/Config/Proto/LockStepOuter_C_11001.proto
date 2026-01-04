@@ -1,6 +1,8 @@
 syntax = "proto3";
 package ET;
 
+//客户端帧同步与服务器通讯消息
+
 // ResponseType G2C_Match
 message C2G_Match // ISessionRequest
 {

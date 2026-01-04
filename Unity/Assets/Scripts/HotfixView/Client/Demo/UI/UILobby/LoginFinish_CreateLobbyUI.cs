@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+	/// <summary>
+	/// 登录完成-创建大厅UI
+	/// </summary>
 	[Event(SceneType.Demo)]
 	public class LoginFinish_CreateLobbyUI: AEvent<Scene, LoginFinish>
 	{

@@ -2,8 +2,15 @@ using System.IO;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-回放处理
+    /// </summary>
     public static partial class LSClientHelper
     {
+        /// <summary>
+        /// 运行回滚系统
+        /// </summary>
+        /// <param name="entity"></param>
         public static void RunLSRollbackSystem(Entity entity)
         {
             if (entity is LSEntity)
@@ -30,7 +37,11 @@ namespace ET.Client
             }
         }
         
-        // 回滚
+        /// <summary>
+        /// 回滚
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="frame"></param>
         public static void Rollback(Room room, int frame)
         {
             room.LSWorld.Dispose();
@@ -82,6 +93,11 @@ namespace ET.Client
             }
         }
 
+        /// <summary>
+        /// 保存回放
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="path"></param>
         public static void SaveReplay(Room room, string path)
         {
             if (room.IsReplay)
@@ -94,6 +110,11 @@ namespace ET.Client
             File.WriteAllBytes(path, bytes);
         }
         
+        /// <summary>
+        /// 跳跃回放
+        /// </summary>
+        /// <param name="room"></param>
+        /// <param name="frame"></param>
         public static void JumpReplay(Room room, int frame)
         {
             if (!room.IsReplay)

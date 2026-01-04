@@ -84,6 +84,7 @@ namespace ET
             }
         }
 
+        //资源服务器IP地址
         static string GetHostServerURL()
         {
             //string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址

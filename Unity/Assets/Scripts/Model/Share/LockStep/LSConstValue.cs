@@ -1,5 +1,6 @@
 namespace ET
 {
+    //帧同步 常量值设置
     public static class LSConstValue
     {
         public const int MatchCount = 1;

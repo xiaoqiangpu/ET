@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-Login系统
+    /// </summary>
     [EntitySystemOf(typeof(UILSLoginComponent))]
     [FriendOf(typeof(UILoginComponent))]
     [FriendOfAttribute(typeof(ET.Client.UILSLoginComponent))]
@@ -22,6 +25,8 @@ namespace ET.Client
 
         public static void OnLogin(this UILSLoginComponent self)
         {
+            Log.Info($"pxq--LS--Clikc StartBtn---");
+            
             LoginHelper.Login(
                 self.Root(),
                 self.account.GetComponent<InputField>().text,

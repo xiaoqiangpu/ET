@@ -33,7 +33,7 @@
 - ET/DotNet/ThirdParty下的DotRecast,ETTask,Kcp,NativeCollection、TrueSync与客户端的Assets/Scripts/ThirdParty下的对应文件共用
 
 
-### 2.组件定义与生命周期
+ ### 2.组件定义与生命周期
 
 #### Entity
 - Scene（场景单元)：位于Core/Entity目录下;继承Entity,IScene;
@@ -102,3 +102,14 @@
 - UniqueId:唯一Id标签
   - 使用此标签标记的类会检测类内部的const int 字段成员是否唯一
   - 可以指定唯一Id的最小值最大值区间
+
+### 3.事件定义与发布
+
+
+### 4.异步编程ETTask
+
+
+### 5.客户端和服务器通讯
+
+
+

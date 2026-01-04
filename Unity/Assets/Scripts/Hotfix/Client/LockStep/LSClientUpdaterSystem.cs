@@ -3,6 +3,9 @@ using System.IO;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-客户端更新逻辑
+    /// </summary>
     [EntitySystemOf(typeof(LSClientUpdater))]
     [FriendOf(typeof (LSClientUpdater))]
     public static partial class LSClientUpdaterSystem
@@ -14,6 +17,11 @@ namespace ET.Client
             self.MyId = room.Root().GetComponent<PlayerComponent>().MyId;
         }
         
+        /// <summary>
+        /// 包含客户带预测等逻辑
+        /// 最多预测5帧
+        /// </summary>
+        /// <param name="self"></param>
         [EntitySystem]
         private static void Update(this LSClientUpdater self)
         {
@@ -55,7 +63,13 @@ namespace ET.Client
                 }
             }
         }
-
+        
+        /// <summary>
+        /// 获取单帧的消息
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="frame"></param>
+        /// <returns></returns>
         private static OneFrameInputs GetOneFrameMessages(this LSClientUpdater self, int frame)
         {
             Room room = self.GetParent<Room>();

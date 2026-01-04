@@ -1,6 +1,9 @@
 namespace ET.Client
 {
 
+    /// <summary>
+    /// 帧同步-场景切换
+    /// </summary>
     public static partial class LSSceneChangeHelper
     {
         // 场景切换协程

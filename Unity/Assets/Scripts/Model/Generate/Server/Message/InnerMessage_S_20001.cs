@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    // 服务器内部通讯消息
     [MemoryPackable]
     [Message(InnerMessage.ObjectQueryRequest)]
     [ResponseType(nameof(ObjectQueryResponse))]

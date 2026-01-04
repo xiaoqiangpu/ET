@@ -1,6 +1,8 @@
 syntax = "proto3";
 package ET;
 
+//服务器帧同步内部通讯消息
+
 /// 请求匹配
 // ResponseType Match2G_Match
 message G2Match_Match // IRequest
