@@ -3,6 +3,9 @@ using System;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 进入地图逻辑
+    /// </summary>
     public static partial class EnterMapHelper
     {
         public static async ETTask EnterMapAsync(Scene root)

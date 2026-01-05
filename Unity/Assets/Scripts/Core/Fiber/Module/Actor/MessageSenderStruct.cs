@@ -3,6 +3,9 @@ using System.IO;
 
 namespace ET
 {
+    /// <summary>
+    /// 消息发送者结构体
+    /// </summary>
     // 知道对方的instanceId，使用这个类发actor消息
     public readonly struct MessageSenderStruct
     {

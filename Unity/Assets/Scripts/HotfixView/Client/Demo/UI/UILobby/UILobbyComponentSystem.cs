@@ -22,7 +22,7 @@ namespace ET.Client
         public static async ETTask EnterMap(this UILobbyComponent self)
         {
             Scene root = self.Root();
-            Log.Info($"pxq--点击大厅匹配--开始进入地图");
+            Log.Info($"pxq--点击大厅按钮--开始进入地图");
             await EnterMapHelper.EnterMapAsync(root);
             await UIHelper.Remove(root, UIType.UILobby);
         }

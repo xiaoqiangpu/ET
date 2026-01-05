@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    // 客户端帧同步与服务器通讯消息
+    // 帧同步-客户端与服务器通讯消息
     [MemoryPackable]
     [Message(LockStepOuter.C2G_Match)]
     [ResponseType(nameof(G2C_Match))]

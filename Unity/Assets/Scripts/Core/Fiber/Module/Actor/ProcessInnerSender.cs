@@ -2,6 +2,9 @@
 
 namespace ET
 {
+    /// <summary>
+    /// 进程间通讯发送者
+    /// </summary>
     [ComponentOf(typeof(Scene))]
     public class ProcessInnerSender: Entity, IAwake, IDestroy, IUpdate
     {

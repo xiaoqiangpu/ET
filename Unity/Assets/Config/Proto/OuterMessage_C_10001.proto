@@ -1,7 +1,7 @@
 syntax = "proto3";
 package ET;
 
-//客户端与服务器内部通讯消息
+//客户端与服务器通讯消息
 
 message HttpGetRouterResponse
 {

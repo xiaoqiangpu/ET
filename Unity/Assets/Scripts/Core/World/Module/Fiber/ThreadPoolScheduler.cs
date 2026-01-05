@@ -16,6 +16,7 @@ namespace ET
         public ThreadPoolScheduler(FiberManager fiberManager)
         {
             this.fiberManager = fiberManager;
+            //动态获取当前设备CPU逻辑核心数（注意是逻辑核心，不是物理核心），例如4核CPU,则线程池的数量就是4个
             int threadCount = Environment.ProcessorCount;
             this.threads = new List<Thread>(threadCount);
             for (int i = 0; i < threadCount; ++i)
