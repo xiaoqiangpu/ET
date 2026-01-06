@@ -5,6 +5,11 @@ using System.Net.Sockets;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 路由地址组件系统
+    /// 获取所有路由地址
+    /// 获取Realm网关负责均衡服务器地址
+    /// </summary>
     [EntitySystemOf(typeof(RouterAddressComponent))]
     [FriendOf(typeof(RouterAddressComponent))]
     public static partial class RouterAddressComponentSystem

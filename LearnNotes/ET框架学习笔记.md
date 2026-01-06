@@ -163,7 +163,7 @@
       - 多线程模型：利用多核CPU,性能强，但数据竞争极其复杂，死锁问题频发，开发难度极高
     - Fiber完美融合二者优点：
       - 逻辑上是单线程的：
-        - 在一个FIber内部，代码是顺序执行的。永远不用担心在一个Fiber内会有另外的Thread来修改你的变量
+        - 在一个Fiber内部，代码是顺序执行的。永远不用担心在一个Fiber内会有另外的Thread来修改你的变量
         - 写代码高效简捷方便，不用加锁Lock
       - 物理上是多线程的：
         - ET底层有一个线程池（Thread Pool）
@@ -186,18 +186,57 @@
       - 线程拿到这个Fiber,就是在一个循环里面吧队列内的消息处理完，处理完了就去下一个Fiber
   - 举例理解：假设开了一个地图进程（Map Process）
     - 1.进程：操作系统启动了一个.exe
-    - 2.线程：ET框架会在在这个进程内启动当前CPU能提供的逻辑核心数的物理线程
+    - 2.线程：ET框架会在在这个进程内启动当前CPU能提供的逻辑核心数的工作线程,例如4核CPU就可以启动4个线程
     - 3.Fiber:
       - 假如你再这个进程内开了100个副本（Instance）
       - ET会对应创建100个Fiber,每个副本对应一个Fiber
       - 副本A里的怪物打玩家，逻辑都在Fiber A里跑，不需要锁
-    - 4.调度：
+    - 4.调度：M:N调度模型，即M个Fiber映射到N个线程
       - 多个线程轮询执行100个Fiber
       - 那个Fiber有玩家操作（有消息），线程就去跑那个Fiber
 
 
 
-#### 客户端登录流程
-- Main Fiber：客户端主进程
-- NetClient Fiber：客户端网络进程
-- 
+#### 客户端消息传递流程
+- 客户端内主要纤程：
+  - Main Fiber：客户端主纤程,负责游戏逻辑、UI更新、渲染等，在Unity主线程
+  - NetClient Fiber：客户端网络纤程，负责网络连接、消息收发等，在独立的一个线程中
+- 路由服务（详见配置表StartSceneConfig@s.xlsx）
+  - RouterManager路由服务器
+  - Router1
+  - Router2
+  - Router3
+  - Router4
+- Realm：网关负载均衡服务器
+  - 登录/鉴权
+  - 负载均衡（网关分配）
+- Gate网关服务器：维护连接（长连接,玩家在线期间全程存在）、消息转发、断线重连等
+  - Gate1
+  - Gate2
+- Map服务器（业务逻辑服务器）
+  - Map1
+  - Map2
+- Location定位服务器：注册和更新ActorId(位置信息)
+- 完整的交互流程：
+  - 1.客户端Main Fiber-->NetClient Fiber:发起登录请求
+  - 2.NetClient -->路由服务器:获取Router地址
+  - 3.NetClient -->连接到节点路由服务器Router
+  - 4.节点路由服务器-->Realm网关负载均衡服务器：请求分配网关服务器地址和连接令牌Key
+  - 5.Realm网关负载均衡服务器-->Gate网关服务器：请求获取请求获取网关服务器地址和链接令牌Key
+  - 6.Gate网关服务器-->下发给Realm网关负责均衡服务器
+  - 7.NetClient 拿到网关服务器和连接令牌Key后和Realm服务器断开
+  - 8.NetClient -->Gate网关服务器 发起长连接.并发送user data和key数据
+  - 9.Gate网关服务器校验有效，则绑定Session，玩家正式上线
+  - 10.之后的消息流转流程则是：Client<--->Gate<--->Map(业务服务器)
+
+#### 同一进程内，两个不同的Fiber（纤程）通讯：
+- 例如Main Fiber和NetClient Fiber之间通讯，通过ProcessInnerSender 进行消息通讯
+- 如果要发送给服务器，则是Main Fiber 通过通过ProcessInnerSender先发送给NetClient Fiber的ProcessInnerSender,
+  然后再有NetClient Fiber 对应的Server.ProcessOuterSender发送给服务器
+
+#### 不同的进程间不同的Fiber（纤程）通讯（主要指服务器端）：
+- 不同的进程间两个Fiber需要通过NetInner Fiber来进行网络消息通讯
+  - 参考Server/Module/NetInner/A2NetInner_Message.sc
+  - 参考Hotfix/Server/Module/Message文件内文件
+  
+
