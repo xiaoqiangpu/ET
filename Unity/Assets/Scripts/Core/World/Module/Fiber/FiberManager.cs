@@ -80,6 +80,7 @@ namespace ET
                     try
                     {
                         // 根据Fiber的SceneType分发Init,必须在Fiber线程中执行
+                        Log.Info($"pxq--FiberManager--FiberInit--sceneType:{sceneType.ToString()}--fiber name:{fiber.Root.Name}--fiber address:{fiber.Address.ToString()}--");
                         await EventSystem.Instance.Invoke<FiberInit, ETTask>((long)sceneType, new FiberInit() {Fiber = fiber});
                         tcs.SetResult(true);
                     }

@@ -21,6 +21,7 @@ namespace ET.Client
 		
 		public static void OnLogin(this UILoginComponent self)
 		{
+			Log.Info($"pxq--点击Login按钮后-开始登录--account:{self.account}, password:{self.password}--");
 			LoginHelper.Login(
 				self.Root(), 
 				self.account.GetComponent<InputField>().text, 

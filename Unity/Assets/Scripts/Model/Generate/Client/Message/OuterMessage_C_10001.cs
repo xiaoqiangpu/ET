@@ -4,6 +4,10 @@ using System.Collections.Generic;
 namespace ET
 {
     // 客户端与服务器通讯消息
+    // M:Main-客户端主纤程
+    // C:NetClient-客户端网络纤程
+    // R:Realm网关负责均衡器（登录鉴权服务器）
+    // G:网关服务器
     [MemoryPackable]
     [Message(OuterMessage.HttpGetRouterResponse)]
     public partial class HttpGetRouterResponse : MessageObject

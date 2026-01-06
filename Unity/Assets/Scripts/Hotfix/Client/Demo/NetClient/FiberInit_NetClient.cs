@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+    /// <summary>
+    /// 客户端网络Fiber-初始化
+    /// </summary>
     [Invoke((long)SceneType.NetClient)]
     public class FiberInit_NetClient: AInvokeHandler<FiberInit, ETTask>
     {

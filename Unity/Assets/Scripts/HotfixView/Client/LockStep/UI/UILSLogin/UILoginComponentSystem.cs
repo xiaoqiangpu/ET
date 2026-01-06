@@ -25,8 +25,7 @@ namespace ET.Client
 
         public static void OnLogin(this UILSLoginComponent self)
         {
-            Log.Info($"pxq--LS--Clikc StartBtn---");
-            
+            Log.Info($"pxq--帧同步--点击Login按钮后-开始登录--account:{self.account}, password:{self.password}--");
             LoginHelper.Login(
                 self.Root(),
                 self.account.GetComponent<InputField>().text,
