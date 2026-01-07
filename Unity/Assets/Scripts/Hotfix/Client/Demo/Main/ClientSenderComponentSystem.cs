@@ -2,6 +2,10 @@
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 客户端发送消息组件系统 Main Fiber -> Netclient Fiber
+    /// Login/Send/Call
+    /// </summary>
     [EntitySystemOf(typeof(ClientSenderComponent))]
     [FriendOf(typeof(ClientSenderComponent))]
     public static partial class ClientSenderComponentSystem

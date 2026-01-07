@@ -1,5 +1,8 @@
 ﻿namespace ET.Server
 {
+    /// <summary>
+    /// 发送网络断线消息
+    /// </summary>
     [EntitySystemOf(typeof(SessionPlayerComponent))]
     public static partial class SessionPlayerComponentSystem
     {

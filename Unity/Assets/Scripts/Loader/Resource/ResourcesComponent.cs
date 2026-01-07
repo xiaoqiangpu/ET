@@ -60,12 +60,14 @@ namespace ET
                 {
                     EditorSimulateModeParameters createParameters = new();
                     createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
+                    Log.Info($"pxq--CreatePackage--EPlayMode.EditorSimulateMode--path:{createParameters.SimulateManifestFilePath}");
                     await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 case EPlayMode.OfflinePlayMode:
                 {
                     OfflinePlayModeParameters createParameters = new();
+                    Log.Info($"pxq--CreatePackage--EPlayMode.OfflinePlayMode--");
                     await package.InitializeAsync(createParameters).Task;
                     break;
                 }
@@ -76,6 +78,8 @@ namespace ET
                     HostPlayModeParameters createParameters = new();
                     createParameters.BuildinQueryServices = new GameQueryServices();
                     createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+                    
+                    Log.Info($"pxq--CreatePackage--EPlayMode.HostPlayMode--资源服务器--HostServer address:{defaultHostServer}--fallbackServer address:{fallbackHostServer}");
                     await package.InitializeAsync(createParameters).Task;
                     break;
                 }
@@ -90,7 +94,6 @@ namespace ET
             //string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址
             string hostServerIP = "http://127.0.0.1";
             string appVersion = "v1.0";
-
 #if UNITY_EDITOR
             if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
             {
@@ -104,7 +107,7 @@ namespace ET
             {
                 return $"{hostServerIP}/CDN/WebGL/{appVersion}";
             }
-
+            
             return $"{hostServerIP}/CDN/PC/{appVersion}";
 #else
             if (Application.platform == RuntimePlatform.Android)

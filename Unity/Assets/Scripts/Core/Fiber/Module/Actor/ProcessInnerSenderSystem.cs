@@ -5,7 +5,7 @@ using System.IO;
 namespace ET
 {
     /// <summary>
-    /// 进程间通讯发送者系统
+    /// Fiber间通讯消息发送系统
     /// </summary>
     [EntitySystemOf(typeof(ProcessInnerSender))]
     [FriendOf(typeof(ProcessInnerSender))]

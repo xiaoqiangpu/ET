@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+    /// <summary>
+    /// 长连接消息-请求响应式
+    /// </summary>
     [MessageHandler(SceneType.NetClient)]
     public class A2NetClient_RequestHandler: MessageHandler<Scene, A2NetClient_Request, A2NetClient_Response>
     {

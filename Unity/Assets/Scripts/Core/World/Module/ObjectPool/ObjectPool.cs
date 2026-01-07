@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace ET
 {
+    /// <summary>
+    /// 对象池
+    /// </summary>
     public class ObjectPool: Singleton<ObjectPool>, ISingletonAwake
     {
         private ConcurrentDictionary<Type, Pool> objPool;

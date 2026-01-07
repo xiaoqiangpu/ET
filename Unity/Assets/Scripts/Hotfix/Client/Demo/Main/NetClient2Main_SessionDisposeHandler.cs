@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+    /// <summary>
+    /// NetClient Fiber 向 Main Fiber 派发Session
+    /// </summary>
     [MessageHandler(SceneType.All)]
     public class NetClient2Main_SessionDisposeHandler: MessageHandler<Scene, NetClient2Main_SessionDispose>
     {

@@ -1,7 +1,14 @@
 ﻿using System;
+using MongoDB.Bson;
 
 namespace ET
 {
+    /// <summary>
+    /// MessageHandler 发消息
+    /// 两种类型的消息：无需响应式；请求响应式
+    /// </summary>
+    /// <typeparam name="E"></typeparam>
+    /// <typeparam name="Message"></typeparam>
     public abstract class MessageHandler<E, Message>: HandlerObject, IMHandler where E : Entity where Message : class, IMessage
     {
         protected abstract ETTask Run(E entity, Message message);
@@ -19,7 +26,7 @@ namespace ET
                 Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).Name} --{typeof (Message).FullName}");
                 return;
             }
-
+            Log.Info($"pxq--MessageHandler--无需响应式--发消息---scene：{e.ToString()}--msg：{msg.ToJson()}--");
             await this.Run(e, msg);
         }
 
@@ -78,6 +85,7 @@ namespace ET
                 }
                 
                 response.RpcId = rpcId;
+                Log.Info($"pxq--MessageHandler--请求响应式--收发消息--request：{request.ToJson()}--response:{response.ToJson()}");
                 fiber.Root.GetComponent<ProcessInnerSender>().Reply(fromAddress, response);
             }
             catch (Exception e)

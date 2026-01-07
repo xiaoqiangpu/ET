@@ -74,34 +74,47 @@
 ##### HotfixView:依赖UnityEngine
 - Client
 
-#### Analyzer_Attribute （Core/Analyzer）
-- ChildOf:标明父子关系
-  - 子实体的父级实体类型约束
-  - 父级实体类型唯一的 标记指定父级实体类型[ChildOf(typeof(parentType)]
-  - 不唯一则标记[ChildOf]
-- FriendOf：标明引用关系,例如System需要修改那个Component对应的数据等
-  - 数据修改友好标记, 用于允许修改指定Component或Child数据的类上
+#### Analyzer_Attribute[代码分析器附加属性] （Core/Analyzer）
+##### 层级约束类：树状结构,防止认错父物体
+- 1.[ChildOf(typeof(parentType)] 可以理解为专属插槽
+  - 约定当前Entity/Component只能作为指定parentType的子节点
+
+- 2.[ComponentOf(Type entityType)] 可以理解为专属挂件
+  - 与ChildOf类似，通常用于传统的Component组件.它声明该组件只能挂载到指定的Entity类型上
+  - 语义上更偏向于功能组件，而ChildOf更偏向于逻辑子节点
+
+##### 访问权限类： ET 是 ECS 架构，数据（Entity）和 逻辑（System）是分离的.System可能访问不到Entity Private类型字段，所以开启对应特性
+- 3.[FriendOf(Type classType)]：
+  - 标记在System上，允许System访问对应classType（一般为Component）对应的private/protected成员
   - 例如:MoveComponentSystem需要修改MoveComponent的数据, 需要在MoveComponentSystem加上[FriendOf(typeof(MoveComponent))]
-- ComponentOf：标明所属关系
-  - 组件类父级实体类型约束
-  - 父级实体类型唯一的 标记指定父级实体类型[ComponentOf(typeof(parentType)]
-  - 不唯一则标记[ComponentOf]
-- EntitySystemOf：为System标明类型所属的静态System静态函数
-  - 标记Entity的System静态类 用于自动生成System函数
-- LSEntitySystemOf:为System标明类型所属的静态System函数
-  - 标记LSEntity的System静态类 用于自动生成System函数
-- DisableNew:添加该标记的类或结构体将禁止使用new关键字构造对象
-- EnableAccessEntiyChild:访问Entity对应的子物体时使用
+- 4.[EnableAccessEntityChild] 可以理解为访问子物体标签
+  - ET默认禁止直接访问entity.Children字典，也禁止随意遍历子实体，为了防止逻辑深度耦合
   - 当方法或属性内需要访问Entity类的child和component时 使用此标签
-  - 仅供必要时使用 大多数情况推荐通过Entity的子类访问
-- EnableClass:访问class类时使用
-- EnableMethod:对于特殊实体类，允许内部声明方法的标签
-- StaticField：静态字段需加此标签
-  - valueToAssign:初始化时的字段值
-  - assignNewTypeInstance:从默认构造函数初始化
-- UniqueId:唯一Id标签
-  - 使用此标签标记的类会检测类内部的const int 字段成员是否唯一
-  - 可以指定唯一Id的最小值最大值区间
+- 5.[EnableMethod] 可以理解为对方法的特批通行证，可以将平时限制访问的方法开发调用
+  - 例如Internal 方法等。通常用于底层或者非常特殊的逻辑场景
+
+##### 系统绑定类：告诉框架，哪些系统负责管理那个组件的生命周期
+- 6.[EntitySystemOf(Type componentType)]
+  - 标记在System类上,告诉ET事件系统,当componentType（Component）执行对应的生命周期（例如Awake、Update等）,调用对应标记的System上的生命周期
+  - 标记Entity的System静态类 用于自动生成System函数
+- 7.[LSEntitySystemOf(Type componentType)]
+  - 帧同步系统绑定类，逻辑原理同上，只能用于帧同步模块
+  - 标记LSEntity的System静态类 用于自动生成System函数
+##### 安全规范与元数据类
+- 8.[DisableNew] 可以理解为禁止私自创建
+  - 标记在 Entity/Component 类上。
+  - 效果：如果你在代码里写 new MyComponent()，分析器直接报错。
+  - 目的：强制你使用 parent.AddChild<MyComponent>() 或 Entity.Create()。因为 ET 的对象需要统一管理 ID、对象池回收和父子关系，自己 new 出来的对象是“黑户”，会系统崩溃。
+- 9.[StaticField]
+  - ET 支持代码热重载（不重启服务器更新代码）。热重载时，旧的静态变量如果还有值，会污染新的代码。
+  - 在 ET 的热更层（Model/Hotfix），默认是不允许写 static 字段的，因为热更无法自动处理静态数据的迁移。
+  - 加上 [StaticField]，表示你向分析器保证：“我知道我在干什么，这个静态字段我会在热更时手动处理（或者它不需要清理）”，分析器就不报错了。
+- 10.[UniqueId]
+  - 用于配置表或网络协议。给一个类绑定一个固定的数字 ID。
+  - 目的：当你在代码重构修改类名时，只要 UniqueId 不变，序列化到数据库的数据或者网络协议就能依然对应得上。
+- 11.[EntityClass]
+  - 告诉分析器：虽然这个类看起来是个普通的 C# 类，但请把它当作 ET 的 Entity 对待，必须遵守所有 Entity 的规则（比如不能随便 new，字段不能随便写等等）
+
 
 ### 3.事件定义与发布
 
@@ -238,5 +251,9 @@
 - 不同的进程间两个Fiber需要通过NetInner Fiber来进行网络消息通讯
   - 参考Server/Module/NetInner/A2NetInner_Message.sc
   - 参考Hotfix/Server/Module/Message文件内文件
+
+#### ConstFiberId
+  - Main：客户端主Fiber
+
   
 

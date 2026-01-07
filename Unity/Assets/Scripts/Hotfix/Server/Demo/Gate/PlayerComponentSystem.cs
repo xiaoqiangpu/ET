@@ -2,6 +2,10 @@
 
 namespace ET.Server
 {
+    /// <summary>
+    /// PlayerComponent系统
+    /// 增加/移除、获取玩家逻辑
+    /// </summary>
     [FriendOf(typeof(PlayerComponent))]
     public static partial class PlayerComponentSystem
     {
