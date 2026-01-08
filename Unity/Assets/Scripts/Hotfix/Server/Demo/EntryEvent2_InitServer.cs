@@ -3,6 +3,9 @@ using System.Net;
 
 namespace ET.Server
 {
+    /// <summary>
+    /// 初始化服务器
+    /// </summary>
     [Event(SceneType.Main)]
     public class EntryEvent2_InitServer: AEvent<Scene, EntryEvent2>
     {

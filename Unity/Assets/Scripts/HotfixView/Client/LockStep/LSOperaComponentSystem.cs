@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-角色操控
+    /// </summary>
     [EntitySystemOf(typeof(LSOperaComponent))]
     [FriendOf(typeof(LSClientUpdater))]
     public static partial class LSOperaComponentSystem

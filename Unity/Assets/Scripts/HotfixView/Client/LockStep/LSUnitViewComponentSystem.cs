@@ -2,6 +2,9 @@
 
 namespace ET.Client
 {
+    /// <summary>
+    /// 帧同步-实体(Unit)实体渲染层组件系统
+    /// </summary>
     [EntitySystemOf(typeof(LSUnitViewComponent))]
     public static partial class LSUnitViewComponentSystem
     {
@@ -35,6 +38,7 @@ namespace ET.Client
 
                 LSUnitView lsUnitView = self.AddChildWithId<LSUnitView, GameObject>(lsUnit.Id, unitGo);
                 lsUnitView.AddComponent<LSAnimatorComponent>();
+                Log.Info($"pxq---帧同步--加载实体单元--例如玩家:{unitGo.name}");
             }
         }
     }

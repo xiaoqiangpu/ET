@@ -1,5 +1,8 @@
 namespace ET
 {
+    /// <summary>
+    /// 初始化共享逻辑
+    /// </summary>
     [Event(SceneType.Main)]
     public class EntryEvent1_InitShare: AEvent<Scene, EntryEvent1>
     {

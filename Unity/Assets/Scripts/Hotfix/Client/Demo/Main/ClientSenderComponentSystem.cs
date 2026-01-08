@@ -57,7 +57,11 @@ namespace ET.Client
             Log.Info($"pxq--Client Login--response---playerId:{response.PlayerId}--msg:{response.Message}");
             return response.PlayerId;
         }
-
+        /// <summary>
+        /// 客户端 Main Fiber发消息给NetClinent Fiber
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="message"></param>
         public static void Send(this ClientSenderComponent self, IMessage message)
         {
             A2NetClient_Message a2NetClientMessage = A2NetClient_Message.Create();

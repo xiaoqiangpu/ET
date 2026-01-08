@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+    /// <summary>
+    /// 客户端NetClient 向 Main 发布Error Message
+    /// </summary>
     [EntitySystemOf(typeof(ClientSessionErrorComponent))]
     public static partial class ClientSessionErrorComponentSystem
     {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace ET.Client
 {
+    /// <summary>
+    /// UnitView逻辑系统
+    /// </summary>
     [EntitySystemOf(typeof(LSUnitView))]
     [LSEntitySystemOf(typeof(LSUnitView))]
     [FriendOf(typeof(LSUnitView))]
@@ -44,8 +47,7 @@ namespace ET.Client
                 self.Position = unit.Position.ToVector();
                 self.Rotation = unit.Rotation.ToQuaternion();
             }
-
-
+            
             LSInput input = unit.GetComponent<LSInputComponent>().LSInput;
             if (input.V != TSVector2.zero)
             {
