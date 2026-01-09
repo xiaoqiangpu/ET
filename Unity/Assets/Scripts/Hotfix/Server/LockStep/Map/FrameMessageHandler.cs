@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
+    /// <summary>
+    /// 帧同步-处理帧同步消息
+    /// </summary>
     [MessageHandler(SceneType.RoomRoot)]
     public class FrameMessageHandler: MessageHandler<Scene, FrameMessage>
     {

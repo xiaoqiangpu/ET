@@ -21,10 +21,15 @@
     <type fullname="MemoryPack.MemoryPackableAttribute" preserve="all" />
   </assembly>
   <assembly fullname="MongoDB.Bson">
+    <type fullname="MongoDB.Bson.BsonExtensionMethods" preserve="all" />
+    <type fullname="MongoDB.Bson.IO.JsonWriterSettings" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptionsAttribute" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Attributes.BsonElementAttribute" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Attributes.BsonIgnoreAttribute" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.BsonClassMap" preserve="all" />
+    <type fullname="MongoDB.Bson.Serialization.BsonSerializationArgs" preserve="all" />
+    <type fullname="MongoDB.Bson.Serialization.BsonSerializationContext" preserve="all" />
+    <type fullname="MongoDB.Bson.Serialization.BsonSerializationContext/Builder" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.BsonSerializer" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Conventions.ConventionPack" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Conventions.ConventionRegistry" preserve="all" />
@@ -32,6 +37,7 @@
     <type fullname="MongoDB.Bson.Serialization.Conventions.IConventionPack" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Conventions.IgnoreExtraElementsConvention" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.IBsonSerializer" preserve="all" />
+    <type fullname="MongoDB.Bson.Serialization.IBsonSerializer`1" preserve="all" />
     <type fullname="MongoDB.Bson.Serialization.Options.DictionaryRepresentation" preserve="all" />
   </assembly>
   <assembly fullname="System">

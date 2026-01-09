@@ -2,6 +2,9 @@
 
 namespace ET.Server
 {
+    /// <summary>
+    /// 帧同步-初始化地图
+    /// </summary>
     [Invoke((long)SceneType.Map)]
     public class FiberInit_Map: AInvokeHandler<FiberInit, ETTask>
     {

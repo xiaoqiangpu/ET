@@ -16,7 +16,7 @@ namespace ETEditor
     /// 从Unity的NavMesh组件里导出地图数据，供服务器来使用
     /// https://blog.csdn.net/huutu/article/details/52672505
     /// </summary>
-    public class NavMeshExporter: Editor
+    public class NavMeshExporter : Editor
     {
         public const byte VERSION = 1;
 
@@ -67,10 +67,14 @@ namespace ETEditor
         private static Dictionary<Vert, Dictionary<Vert, Pair>> vertPairDict = new Dictionary<Vert, Dictionary<Vert, Pair>>();
         private static Dictionary<float, Dictionary<float, Vert>> pointVertDict = new Dictionary<float, Dictionary<float, Vert>>();
         private static Dictionary<int, Vert> indexVertDict = new Dictionary<int, Vert>();
+
         private static string outputClientFolder = "../RecastNavMesh/Meshes/";
-        private static string outputServerFolder = "../Config/RecastNavData/ExportedObj/";
+
+        // private static string outputServerFolder = "../Config/RecastNavData/ExportedObj/";
+        private static string outputServerFolder = "../Config/Recast/";
 
         #region 菜单主函数
+
         [MenuItem("ET/NavMesh/ExportSceneObj", false, ETMenuItemPriority.NavMesh)]
         public static void ExportScene()
         {
@@ -91,14 +95,14 @@ namespace ETEditor
             InputVertices(triangulation.vertices);
             InputTriangles(triangulation.indices, triangulation.areas);
             IndexVertsAndFaces();
-            //WriteFile();
+            WriteFile();
 
             // 导出*_internal.Obj，仅供Unity编辑器自己查看
             //WriteUnityObjFile();
             // 导出Recast可用的*.Obj文件
             WriteRecastObjFile();
             // 拷贝Obj和Bytes文件到服务器目录下 TODO 暂不需要
-            //CopyObjFiles();
+            CopyObjFiles();
 
             Debug.Log($"NavMesh Output Info - Vertices:[{vertList.Count}] - Faces:[{faceList.Count}]");
         }
@@ -112,9 +116,9 @@ namespace ETEditor
             for (int i = 0, n = vertices.Length - 1; i <= n; i++)
             {
                 var point = vertices[i];
-                var x = (float) Math.Round(point.x, 2);
-                var y = (float) Math.Round(point.y, 2);
-                var z = (float) Math.Round(point.z, 2);
+                var x     = (float)Math.Round(point.x, 2);
+                var y     = (float)Math.Round(point.y, 2);
+                var z     = (float)Math.Round(point.z, 2);
                 if (!pointVertDict.ContainsKey(x))
                 {
                     pointVertDict.Add(x, new Dictionary<float, Vert>());
@@ -140,12 +144,12 @@ namespace ETEditor
 
         private static void InputTriangles(int[] indices, int[] areas)
         {
-            Face face = null;
-            var faceIndices = new HashSet<int>();
+            Face face        = null;
+            var  faceIndices = new HashSet<int>();
             for (int i = 0, n = areas.Length; i < n; i++)
             {
                 var triangleIndexList = new int[3];
-                var triangleVertList = new Vert[3];
+                var triangleVertList  = new Vert[3];
                 for (var j = 0; j < 3; j++)
                 {
                     triangleIndexList[j] = indices[i * 3 + j];
@@ -161,7 +165,7 @@ namespace ETEditor
                 }
 
                 var newFace = true;
-                var area = areas[i] >= 3? areas[i] - 2 : 0;
+                var area    = areas[i] >= 3 ? areas[i] - 2 : 0;
                 if (face != null && face.area == area)
                 {
                     for (var j = 0; j < 3; j++)
@@ -186,12 +190,12 @@ namespace ETEditor
                     face.area = area;
                 }
 
-                double x1 = vert1.x - vert0.x;
-                double y1 = vert1.y - vert0.y;
-                double z1 = vert1.z - vert0.z;
-                double x2 = vert2.x - vert0.x;
-                double y2 = vert2.y - vert0.y;
-                double z2 = vert2.z - vert0.z;
+                double x1      = vert1.x - vert0.x;
+                double y1      = vert1.y - vert0.y;
+                double z1      = vert1.z - vert0.z;
+                double x2      = vert2.x - vert0.x;
+                double y2      = vert2.y - vert0.y;
+                double z2      = vert2.z - vert0.z;
                 double normalA = y1 * z2 - z1 * y2;
                 double normalB = z1 * x2 - x1 * z2;
                 double normalC = x1 * y2 - y1 * x2;
@@ -224,9 +228,9 @@ namespace ETEditor
 
             foreach (var pair in pairList)
             {
-                var firstFace = pair.firstEdgeFace;
-                var secondFace = pair.secondEdgeFace;
-                var firstDistance = GetDistance(firstFace.centerX - pair.centerX, firstFace.centerZ - pair.centerZ);
+                var firstFace      = pair.firstEdgeFace;
+                var secondFace     = pair.secondEdgeFace;
+                var firstDistance  = GetDistance(firstFace.centerX - pair.centerX, firstFace.centerZ - pair.centerZ);
                 var secondDistance = GetDistance(secondFace.centerX - pair.centerX, secondFace.centerZ - pair.centerZ);
                 pair.distance = firstDistance + secondDistance;
             }
@@ -234,7 +238,7 @@ namespace ETEditor
 
         private static float GetDistance(float deltaX, float deltaZ)
         {
-            return (float) Math.Round(Math.Sqrt((double) deltaX * (double) deltaX + (double) deltaZ * (double) deltaZ), 2);
+            return (float)Math.Round(Math.Sqrt((double)deltaX * (double)deltaX + (double)deltaZ * (double)deltaZ), 2);
         }
 
         private static void InitFace(Face face)
@@ -257,14 +261,14 @@ namespace ETEditor
             face.centerZ /= vertCount;
             if (face.normalB != 0)
             {
-                face.normalX = (float) Math.Round(face.normalA / face.normalB, 6);
-                face.normalZ = (float) Math.Round(face.normalC / face.normalB, 6);
+                face.normalX = (float)Math.Round(face.normalA / face.normalB, 6);
+                face.normalZ = (float)Math.Round(face.normalC / face.normalB, 6);
             }
 
             for (int i = 0, n = vertCount - 1; i <= n; i++)
             {
-                var firstVert = face.verts[i];
-                var secondVert = face.verts[i == n? 0 : i + 1];
+                var firstVert  = face.verts[i];
+                var secondVert = face.verts[i == n ? 0 : i + 1];
                 if (!vertPairDict.ContainsKey(firstVert))
                 {
                     vertPairDict.Add(firstVert, new Dictionary<Vert, Pair>());
@@ -329,8 +333,8 @@ namespace ETEditor
             var hilbertZ = 65535f / (maxZ - minZ);
             foreach (var face in faceList)
             {
-                var X = (uint) Math.Round((face.centerX - minX) * hilbertX);
-                var Z = (uint) Math.Round((face.centerZ - minZ) * hilbertZ);
+                var X = (uint)Math.Round((face.centerX - minX) * hilbertX);
+                var Z = (uint)Math.Round((face.centerZ - minZ) * hilbertZ);
                 var a = X ^ Z;
                 var b = 0xFFFF ^ a;
                 var c = 0xFFFF ^ (X | Z);
@@ -400,7 +404,7 @@ namespace ETEditor
                 System.IO.Directory.CreateDirectory(outputClientFolder);
             }
 
-            var path = outputClientFolder + SceneManager.GetActiveScene().name + ".bytes";
+            var path   = outputClientFolder + SceneManager.GetActiveScene().name + ".bytes";
             var writer = new BinaryWriter(new FileStream(path, FileMode.Create));
             writer.Write('N');
             writer.Write('a');
@@ -456,7 +460,7 @@ namespace ETEditor
 
         private static void WriteUnityObjFile()
         {
-            var path = outputClientFolder + SceneManager.GetActiveScene().name + "_internal.obj";
+            var          path            = outputClientFolder + SceneManager.GetActiveScene().name + "_internal.obj";
             StreamWriter tmpStreamWriter = new StreamWriter(path);
 
             NavMeshTriangulation tmpNavMeshTriangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
@@ -465,7 +469,7 @@ namespace ETEditor
             for (int i = 0; i < tmpNavMeshTriangulation.vertices.Length; i++)
             {
                 tmpStreamWriter.WriteLine("v  " + tmpNavMeshTriangulation.vertices[i].x + " " + tmpNavMeshTriangulation.vertices[i].y + " " +
-                    tmpNavMeshTriangulation.vertices[i].z);
+                                          tmpNavMeshTriangulation.vertices[i].z);
             }
 
             tmpStreamWriter.WriteLine("g pPlane1");
@@ -474,7 +478,7 @@ namespace ETEditor
             for (int i = 0; i < tmpNavMeshTriangulation.indices.Length;)
             {
                 tmpStreamWriter.WriteLine("f " + (tmpNavMeshTriangulation.indices[i] + 1) + " " + (tmpNavMeshTriangulation.indices[i + 1] + 1) + " " +
-                    (tmpNavMeshTriangulation.indices[i + 2] + 1));
+                                          (tmpNavMeshTriangulation.indices[i + 2] + 1));
                 i = i + 3;
             }
 
@@ -504,20 +508,20 @@ namespace ETEditor
                 System.IO.Directory.CreateDirectory(outputClientFolder);
             }
 
-            var filename = SceneManager.GetActiveScene().name;
-            var path = outputClientFolder + filename + ".obj";
-            StreamWriter sw = new StreamWriter(path);
+            var          filename = SceneManager.GetActiveScene().name;
+            var          path     = outputClientFolder + filename + ".obj";
+            StreamWriter sw       = new StreamWriter(path);
 
             Dictionary<string, ObjMaterial> materialList = PrepareFileWrite();
 
             List<MeshFilter> meshes = Collect();
-            int count = 0;
+            int              count  = 0;
             foreach (MeshFilter mf in meshes)
             {
                 sw.Write("mtllib ./" + filename + ".mtl\n");
                 string strMes = MeshToString(mf, materialList);
                 sw.Write(strMes);
-                EditorUtility.DisplayProgressBar("Exporting objects...", mf.name, count++ / (float) meshes.Count);
+                EditorUtility.DisplayProgressBar("Exporting objects...", mf.name, count++ / (float)meshes.Count);
             }
 
             sw.Flush();
@@ -563,8 +567,8 @@ namespace ETEditor
             // ————————————————
             // 版权声明：本文为CSDN博主「懵懵爸爸」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
             // 原文链接：https://blog.csdn.net/ljason1993/article/details/80924723
-            bool bFindTag = false;
-            string[] strTags = UnityEditorInternal.InternalEditorUtility.tags;
+            bool     bFindTag = false;
+            string[] strTags  = UnityEditorInternal.InternalEditorUtility.tags;
             foreach (string tag in strTags)
             {
                 if (tag == NAVMESH_TAG)
@@ -599,9 +603,9 @@ namespace ETEditor
 
         public static string MeshToString(MeshFilter mf, Dictionary<string, ObjMaterial> materialList)
         {
-            Mesh m = mf.sharedMesh;
-            Material[] mats = mf.GetComponent<Renderer>().sharedMaterials;
-            StringBuilder sb = new StringBuilder();
+            Mesh          m    = mf.sharedMesh;
+            Material[]    mats = mf.GetComponent<Renderer>().sharedMaterials;
+            StringBuilder sb   = new StringBuilder();
             sb.Append("g ").Append(mf.name).Append("\n");
             // foreach(Vector3 v in m.vertices) {
             // 	sb.Append(string.Format("v {0} {1} {2}\n",v.x,v.y,v.z));
@@ -646,7 +650,7 @@ namespace ETEditor
 
             for (int material = 0; material < countMat; material++)
             {
-                string nameMat = "null";
+                string  nameMat     = "null";
                 Texture mainTexture = null;
                 if (mats[material] != null)
                 {
@@ -689,7 +693,7 @@ namespace ETEditor
                 {
                     //Because we inverted the x-component, we also needed to alter the triangle winding.
                     sb.Append(string.Format("f {1}/{1}/{1} {0}/{0}/{0} {2}/{2}/{2}\n",
-                        triangles[i] + 1 + vertexOffset, triangles[i + 1] + 1 + normalOffset, triangles[i + 2] + 1 + uvOffset));
+                                            triangles[i] + 1 + vertexOffset, triangles[i + 1] + 1 + normalOffset, triangles[i + 2] + 1 + uvOffset));
                 }
             }
 
@@ -712,20 +716,20 @@ namespace ETEditor
             string sourceFolder = outputClientFolder;
             // *.bytes, *.obj, *_internal.obj文件不再拷贝到服务器的Config/Navmesh目录下，不再需要了，减少服务器数据文件的大小。Aug.27.2020. Liu Gang.
             //得到原文件根目录下的所有文件
-            //	    {
-            //		    string[] files = System.IO.Directory.GetFiles(sourceFolder);
-            //		    foreach (string file in files)
-            //		    {
-            //			    string name = System.IO.Path.GetFileName(file);
-            //			    // 仅拷贝bytes文件和obj文件，但是不包括文件名里包含“internal”字样的obj文件。
-            //			    var ext = Path.GetExtension(file);
-            //			    if (ext == ".bytes" || (ext == ".obj" && !file.Contains("_internal.")))
-            //			    {
-            //				    string dest = System.IO.Path.Combine(destFolder, name);
-            //				    System.IO.File.Copy(file, dest, true); //复制文件
-            //			    }
-            //		    }
-            //	    }
+            // {
+            //     string[] files = System.IO.Directory.GetFiles(sourceFolder);
+            //     foreach (string file in files)
+            //     {
+            //         string name = System.IO.Path.GetFileName(file);
+            //         // 仅拷贝bytes文件和obj文件，但是不包括文件名里包含“internal”字样的obj文件。
+            //         var ext = Path.GetExtension(file);
+            //         if (ext == ".bytes" || (ext == ".obj" && !file.Contains("_internal.")))
+            //         {
+            //             string dest = System.IO.Path.Combine(outputServerFolder, name);
+            //             System.IO.File.Copy(file, dest, true); //复制文件
+            //         }
+            //     }
+            // }
 
             // 拷贝到RecastDemo配置路径
             {
@@ -737,10 +741,13 @@ namespace ETEditor
                 }
                 foreach (string file in files)
                 {
+                    Log.Info($"pxq--导出NavMesh文件--CopyFile name:{file}");
                     string name = System.IO.Path.GetFileName(file);
                     // 仅拷贝bytes文件和obj文件，但是不包括文件名里包含“internal”字样的obj文件。
                     var ext = Path.GetExtension(file);
-                    if (ext == ".obj" && !file.Contains("_internal."))
+                    // if (ext == ".obj" && !file.Contains("_internal."))  //pxq--原来的
+                    
+                    if (ext == ".bytes" && !file.Contains("_internal."))      //pxq--新增的
                     {
                         string dest = System.IO.Path.Combine(outputServerFolder, name);
                         System.IO.File.Copy(file, dest, true); //复制文件

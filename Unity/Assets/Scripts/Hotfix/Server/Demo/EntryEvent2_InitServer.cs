@@ -26,6 +26,7 @@ namespace ET.Server
                     var processScenes = StartSceneConfigCategory.Instance.GetByProcess(process);
                     foreach (StartSceneConfig startConfig in processScenes)
                     {
+                        Log.Info($"pxq--Init Server--startCfg:{startConfig.ToJson()}");
                         await FiberManager.Instance.Create(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
                     }
 

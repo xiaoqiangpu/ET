@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ET.Server
 {
+	/// <summary>
+	/// 同步消息给房间Fiber
+	/// </summary>
 	[MessageHandler(SceneType.Map)]
 	public class Match2Map_GetRoomHandler : MessageHandler<Scene, Match2Map_GetRoom, Map2Match_GetRoom>
 	{
