@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    /// <summary>
+    /// 单帧输入
+    /// </summary>
     public partial class OneFrameInputs
     {
         protected bool Equals(OneFrameInputs other)

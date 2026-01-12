@@ -5,6 +5,9 @@
 	{
 		protected override async ETTask Run(Scene root, M2C_StartSceneChange message)
 		{
+			
+			Log.Info($"pxq--Server--M2C_StartSceneChangeHandler:{message.ToJson()}");
+			
 			await SceneChangeHelper.SceneChangeTo(root, message.SceneName, message.SceneInstanceId);
 		}
 	}

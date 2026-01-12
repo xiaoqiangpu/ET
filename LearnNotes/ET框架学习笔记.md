@@ -230,7 +230,7 @@
   - Map1
   - Map2
 - Location定位服务器：注册和更新ActorId(位置信息)
-- 完整的交互流程：
+- 完整的交互流程：Main2NetClient_LoginHandler
   - 1.客户端Main Fiber-->NetClient Fiber:发起登录请求
   - 2.NetClient -->路由服务器:获取Router地址
   - 3.NetClient -->连接到节点路由服务器Router
@@ -252,8 +252,25 @@
   - 参考Server/Module/NetInner/A2NetInner_Message.sc
   - 参考Hotfix/Server/Module/Message文件内文件
 
-#### ConstFiberId
-  - Main：客户端主Fiber
+#### 调用接口记录：
+- 1.通讯协议Protobuf文件位于Unity/Assets/Config/Ptoto目录下
+- 2.客户端Main Fiber通过ClientSenderComponentSystem 调用LoginAsync/Send/Call等API发送消息给NetClient Fiber
+- 3.客户端NetClient Fiber通过A2NetClient_MessageHandler、A2NetClient_RequestHandler等向服务区发送消息
+- 4.再经过Session.cs 中的Send和Call API将Message通过MessageSerializeHelper 序列化成Memory Buffer传递给服务器
+- 5.服务器主动向客户端发送消息主要通过MessageSenderSystem系统Send/Call API
+- 6.客户端通过 NetComponentOnReadInvoker_NetClient监听服务器端消息
+- 7.Realm网关负责均衡服务器通过NetComponentOnReadInvoker_Realm监听消息
+- 8.服务器端通过 NetComponentOnReadInvoker_Gate监听来自网关（客户端）的消息
+- 9.Location定位服务器通过MessageLocationSenderComponentSystem可向Gate(客户端)发送消息
+
+
+#### 消息接口类型
+- IMessage:不需要返回的消息类型;IRequest/IResponse 请求返回类型
+  - FrameMessage:客户端主动向服务器发送的帧消息
+  - 
+- ISession:ISessionMessage 不需要返回; ISessionRequest/ISessionResponse 请求返回类型
+- ILocation:ILocationMessage 不需要返回;ILocationRequest/ILocationResponse 请求返回类型
+- IRoomMessage:IRoomMessage 不需要返回
 
   
 

@@ -1,5 +1,8 @@
 ﻿namespace ET
 {
+    /// <summary>
+    /// 纤程-初始化
+    /// </summary>
     [Invoke((long)SceneType.Main)]
     public class FiberInit_Main: AInvokeHandler<FiberInit, ETTask>
     {

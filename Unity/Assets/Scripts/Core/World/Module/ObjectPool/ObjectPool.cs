@@ -27,6 +27,12 @@ namespace ET
             return this.Fetch(typeof (T)) as T;
         }
 
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="isFromPool"></param>
+        /// <returns></returns>
         public object Fetch(Type type, bool isFromPool = true)
         {
             if (!isFromPool)
@@ -42,7 +48,11 @@ namespace ET
             }
             return obj;
         }
-
+        
+        /// <summary>
+        /// 回收
+        /// </summary>
+        /// <param name="obj"></param>
         public void Recycle(object obj)
         {
             if (obj is IPool p)

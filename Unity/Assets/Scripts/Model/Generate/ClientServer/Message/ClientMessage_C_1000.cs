@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace ET
 {
     // 客户端内部通讯消息
+    // Main2NetClient Login
     [MemoryPackable]
     [Message(ClientMessage.Main2NetClient_Login)]
     [ResponseType(nameof(NetClient2Main_Login))]
@@ -48,6 +49,7 @@ namespace ET
         }
     }
 
+    // NetClient2Main Login
     [MemoryPackable]
     [Message(ClientMessage.NetClient2Main_Login)]
     public partial class NetClient2Main_Login : MessageObject, IResponse
