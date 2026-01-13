@@ -1,5 +1,8 @@
 namespace ET.Client
 {
+    /// <summary>
+    /// 当前场景工厂
+    /// </summary>
     public static class CurrentSceneFactory
     {
         public static Scene Create(long id, string name, CurrentScenesComponent currentScenesComponent)

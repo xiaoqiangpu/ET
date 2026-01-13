@@ -209,7 +209,6 @@
       - 那个Fiber有玩家操作（有消息），线程就去跑那个Fiber
 
 
-
 #### 客户端消息传递流程
 - 客户端内主要纤程：
   - Main Fiber：客户端主纤程,负责游戏逻辑、UI更新、渲染等，在Unity主线程
@@ -258,19 +257,43 @@
 - 3.客户端NetClient Fiber通过A2NetClient_MessageHandler、A2NetClient_RequestHandler等向服务区发送消息
 - 4.再经过Session.cs 中的Send和Call API将Message通过MessageSerializeHelper 序列化成Memory Buffer传递给服务器
 - 5.服务器主动向客户端发送消息主要通过MessageSenderSystem系统Send/Call API
+
 - 6.客户端通过 NetComponentOnReadInvoker_NetClient监听服务器端消息
 - 7.Realm网关负责均衡服务器通过NetComponentOnReadInvoker_Realm监听消息
 - 8.服务器端通过 NetComponentOnReadInvoker_Gate监听来自网关（客户端）的消息
 - 9.Location定位服务器通过MessageLocationSenderComponentSystem可向Gate(客户端)发送消息
 
+- 10.>>>客户端Main Fiber主要通过ClientSenderComponent组件和ClientSenderComponentSystem的Send和Call API向NetClient Fiber发送消息
+- 11.>>>NetClient Fiber 通过SessionComponent.Session 组件和SessionSystem 的对应Send 和Call API向服务器发送消息
+- 12.>>>服务器端主动下发消息通过MessageLocationSender组件和MessageLocationSenderComponentSystem 对应Send和Call API下发消息
 
 #### 消息接口类型
 - IMessage:不需要返回的消息类型;IRequest/IResponse 请求返回类型
   - FrameMessage:客户端主动向服务器发送的帧消息
-  - 
 - ISession:ISessionMessage 不需要返回; ISessionRequest/ISessionResponse 请求返回类型
 - ILocation:ILocationMessage 不需要返回;ILocationRequest/ILocationResponse 请求返回类型
 - IRoomMessage:IRoomMessage 不需要返回
 
+
+
   
 
+
+
+### Excel数据表的配置使用
+
+- 配置表路径：Unity/Assets/Config/Excel目录下
+- AIConfig AI相关配置表
+- UnitConfig 单元配置表
+- StartConfig服务器启动配置文件夹
+  - Benchmark 基准测试配置目录
+  - Localhost 本地配置目录
+  - Release 发布配置目录
+  - RouterTest 路由测试目录
+  - 备注：以上配置目录都包含以下配置
+    - StartMachineConfig@s：服务器端启动机器配置
+    - StartProcessConfig@s：服务器端启动进程配置
+    - StartSceneConfig@s：服务器端启动场景配置,包含StartSceneConfig和Router配置
+    - StartZoneConfig@s：服务器端启动时区配置
+- 导出文件路径为：ET/Config/Excel目录下
+- 生成代码文件路径为：Unity/Assets/Scripts/Model/Generate/Client、ClientServer、Server/Config目录下

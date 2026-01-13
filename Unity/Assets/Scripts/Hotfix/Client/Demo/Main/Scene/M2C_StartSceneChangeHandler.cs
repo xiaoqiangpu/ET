@@ -1,5 +1,8 @@
 ﻿namespace ET.Client
 {
+	/// <summary>
+	/// 开始场景切换
+	/// </summary>
 	[MessageHandler(SceneType.Demo)]
 	public class M2C_StartSceneChangeHandler : MessageHandler<Scene, M2C_StartSceneChange>
 	{
