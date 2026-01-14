@@ -191,6 +191,7 @@ namespace ET
         }
     }
 
+    // 帧消息
     [MemoryPackable]
     [Message(LockStepOuter.FrameMessage)]
     public partial class FrameMessage : MessageObject, IMessage
@@ -200,12 +201,18 @@ namespace ET
             return ObjectPool.Instance.Fetch(typeof(FrameMessage), isFromPool) as FrameMessage;
         }
 
+        /// <summary>
+        /// 当前帧序号
+        /// </summary>
         [MemoryPackOrder(0)]
         public int Frame { get; set; }
 
         [MemoryPackOrder(1)]
         public long PlayerId { get; set; }
 
+        /// <summary>
+        /// 当前帧输入
+        /// </summary>
         [MemoryPackOrder(2)]
         public LSInput Input { get; set; }
 

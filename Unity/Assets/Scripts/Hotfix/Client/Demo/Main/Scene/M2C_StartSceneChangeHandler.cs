@@ -1,10 +1,16 @@
 ﻿namespace ET.Client
 {
+	/// <summary>
+	/// 开始场景切换
+	/// </summary>
 	[MessageHandler(SceneType.Demo)]
 	public class M2C_StartSceneChangeHandler : MessageHandler<Scene, M2C_StartSceneChange>
 	{
 		protected override async ETTask Run(Scene root, M2C_StartSceneChange message)
 		{
+			
+			Log.Info($"pxq--Server--M2C_StartSceneChangeHandler:{message.ToJson()}");
+			
 			await SceneChangeHelper.SceneChangeTo(root, message.SceneName, message.SceneInstanceId);
 		}
 	}

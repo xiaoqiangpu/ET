@@ -8,7 +8,8 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene root, Match2G_NotifyMatchSuccess message)
         {
-            await LSSceneChangeHelper.SceneChangeTo(root, "Map3", message.ActorId.InstanceId);
+            Log.Info($"pxq--客户端收到服务器--匹配成功消息--{message.ToJson()}--开始进入地图：");
+            await LSSceneChangeHelper.SceneChangeTo(root, "Map1", message.ActorId.InstanceId);
         }
     }
 }

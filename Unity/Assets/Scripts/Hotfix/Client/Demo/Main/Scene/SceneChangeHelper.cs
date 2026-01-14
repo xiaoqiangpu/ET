@@ -1,8 +1,13 @@
 ﻿namespace ET.Client
 {
+    /// <summary>
+    /// 场景切换
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="sceneName"></param>
+    /// <param name="sceneInstanceId"></param>
     public static partial class SceneChangeHelper
     {
-        // 场景切换协程
         public static async ETTask SceneChangeTo(Scene root, string sceneName, long sceneInstanceId)
         {
             root.RemoveComponent<AIComponent>();

@@ -21,7 +21,7 @@
     [ResponseType(nameof(A2NetClient_Response))]
     public class A2NetClient_Request: MessageObject, IRequest
     {
-        public static A2NetClient_Request Create()
+        public static A2NetClient_Request Create() 
         {
             return ObjectPool.Instance.Fetch(typeof(A2NetClient_Request)) as A2NetClient_Request;
         }

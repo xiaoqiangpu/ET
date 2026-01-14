@@ -4,6 +4,7 @@ package ET;
 
 //客户端内部通讯消息
 
+//Main2NetClient Login
 // ResponseType NetClient2Main_Login
 message Main2NetClient_Login // IRequest
 {
@@ -13,6 +14,7 @@ message Main2NetClient_Login // IRequest
 	string Password = 4; 	// 密码
 }
 
+//NetClient2Main Login
 message NetClient2Main_Login // IResponse
 {
 	int32 RpcId = 1;

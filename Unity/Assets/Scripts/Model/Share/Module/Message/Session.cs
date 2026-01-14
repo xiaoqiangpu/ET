@@ -151,7 +151,7 @@ namespace ET
         {
             self.LastSendTime = TimeInfo.Instance.ClientNow();
             LogMsg.Instance.Debug(self.Fiber(), message);
-
+            //序列化数据
             (ushort opcode, MemoryBuffer memoryBuffer) = MessageSerializeHelper.ToMemoryBuffer(self.AService, actorId, message);
             self.AService.Send(self.Id, memoryBuffer);
         }

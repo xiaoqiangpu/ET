@@ -3,6 +3,9 @@ using System.IO;
 
 namespace ET
 {
+    /// <summary>
+    /// 消息序列化类
+    /// </summary>
     public static class MessageSerializeHelper
     {
         public static byte[] Serialize(MessageObject message)

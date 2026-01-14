@@ -5,8 +5,16 @@ using System.IO;
 
 namespace ET.Server
 {
+    /// <summary>
+    /// 地图消息帮助类
+    /// </summary>
     public static partial class MapMessageHelper
     {
+        /// <summary>
+        /// 通知增加Unit
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="sendUnit"></param>
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)
         {
             M2C_CreateUnits createUnits = M2C_CreateUnits.Create();
@@ -14,6 +22,11 @@ namespace ET.Server
             MapMessageHelper.SendToClient(unit, createUnits);
         }
         
+        /// <summary>
+        /// 通知移除Unit
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="sendUnit"></param>
         public static void NoticeUnitRemove(Unit unit, Unit sendUnit)
         {
             M2C_RemoveUnits removeUnits = M2C_RemoveUnits.Create();
@@ -21,6 +34,11 @@ namespace ET.Server
             MapMessageHelper.SendToClient(unit, removeUnits);
         }
         
+        /// <summary>
+        /// 广播消息
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="message"></param>
         public static void Broadcast(Unit unit, IMessage message)
         {
             (message as MessageObject).IsFromPool = false;
@@ -33,6 +51,11 @@ namespace ET.Server
             }
         }
         
+        /// <summary>
+        /// 向客户端发送消息
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="message"></param>
         public static void SendToClient(Unit unit, IMessage message)
         {
             unit.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession).Send(unit.Id, message);
