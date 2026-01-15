@@ -52,5 +52,6 @@
     </ItemGroup> 
     <ItemGroup>
       <Folder Include="Client\LockStep\Test\" />
+      <Folder Include="Share\LockStep\Physics\" />
     </ItemGroup> 
 </Project>
