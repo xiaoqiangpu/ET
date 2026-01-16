@@ -37,7 +37,8 @@ namespace ET.Client
             root.RemoveComponent<Room>();
 
             Room room = root.AddComponent<Room>();
-            room.Name = "Map1";
+            // room.Name = "Map1";  //pxq--
+            room.Name = "Map3";
             room.IsReplay = true;
             room.Replay = replay;
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
@@ -58,7 +59,8 @@ namespace ET.Client
             root.RemoveComponent<Room>();
 
             Room room = root.AddComponent<Room>();
-            room.Name = "Map1";
+            // room.Name = "Map1";  //pxq--
+            room.Name = "Map3";
             
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(message.UnitInfos, message.StartTime, message.Frame);

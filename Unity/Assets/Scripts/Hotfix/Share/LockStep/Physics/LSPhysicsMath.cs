@@ -6,7 +6,7 @@ namespace ET
     /// 3D数学算法库
     /// </summary>
     [FriendOf(typeof(LSCollider))]
-    public static class LSPhysicssMath
+    public static class LSPhysicsMath
     {
         /// <summary>
         /// AABB(轴对齐包围盒)更新与检测

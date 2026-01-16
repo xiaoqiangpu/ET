@@ -1,4 +1,5 @@
-﻿namespace ET.Client
+﻿using ET;
+namespace ET.Client
 {
     /// <summary>
     /// 场景切换
@@ -15,8 +16,21 @@
             CurrentScenesComponent currentScenesComponent = root.GetComponent<CurrentScenesComponent>();
             currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
             Scene currentScene = CurrentSceneFactory.Create(sceneInstanceId, sceneName, currentScenesComponent);
+            
+            //----增加物理组件---pxq--
+            
+            // 挂载物理世界组件 (管理所有碰撞体)
+            currentScene.AddComponent<LSPhysicsWorld>();
+            
+            // 加载地图静态障碍物 (读取 Json 生成 BoxCollider)
+            // 确保 MapObstacleLoader 位于 Share 层
+            MapObstacleLoader.Load(currentScene, sceneName);
+            
+            Log.Info($"pxq--Client---CreateScene--物理系统加载完毕");
+            //-------------------
+            
             UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
-         
+            
             // 可以订阅这个事件中创建Loading界面
             EventSystem.Instance.Publish(root, new SceneChangeStart());
             // 等待CreateMyUnit的消息

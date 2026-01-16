@@ -12,13 +12,13 @@ namespace ET
         {
             self.ShapeType = type;
             LSPhysicsWorld world=self.Root().GetComponent<LSPhysicsWorld>();
-            world?.ColliderIds.Add(self.InstanceId);
+            world?.Colliders.Add(self);
         }
         [EntitySystem]
         private static void Destroy(this ET.LSCollider self)
         {
             LSPhysicsWorld world=self.Root()?.GetComponent<LSPhysicsWorld>();
-            world?.ColliderIds.Remove(self.InstanceId);
+            world?.Colliders.Remove(self);
         }        
     }
 }
