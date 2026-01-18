@@ -2,10 +2,12 @@
 
 namespace ET.Client
 {
+	[FriendOf(typeof(LSCollider))]
     public static partial class UnitFactory
     {
         public static Unit Create(Scene currentScene, UnitInfo unitInfo)
         {
+	        Log.Info($"pxq--UnitFactory--Create--Unit--");
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
 	        unitComponent.Add(unit);
@@ -33,7 +35,11 @@ namespace ET.Client
 	        unit.AddComponent<ObjectWait>();
 
 	        unit.AddComponent<XunLuoPathComponent>();
-	        
+	        //pxq--add-----------
+	        LSCollider unitCol= unit.AddComponent<LSCollider, LSColliderType>(LSColliderType.Sphere);
+	        unitCol.Radius = 0.5f;
+	        unit.AddComponent<LSRigidBody>();
+	        //--------------------
 	        EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
             return unit;
         }

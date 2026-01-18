@@ -20,7 +20,7 @@ namespace ET
         /// <summary>
         /// 空气阻力
         /// </summary>
-        public FP Drag = 0.05f;
+        public FP Drag = 0.1f;
         /// <summary>
         /// 是否启用重力
         /// </summary>

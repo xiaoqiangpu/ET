@@ -26,7 +26,7 @@ namespace ET
                 Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).Name} --{typeof (Message).FullName}");
                 return;
             }
-            Log.Info($"pxq--MessageHandler--无需响应式--发消息---scene：{e.ToString()}--msg：{msg.ToJson()}--");
+            // Log.Info($"pxq--MessageHandler--无需响应式--发消息---scene：{e.ToString()}--msg：{msg.ToJson()}--");
             await this.Run(e, msg);
         }
 
@@ -85,7 +85,7 @@ namespace ET
                 }
                 
                 response.RpcId = rpcId;
-                Log.Info($"pxq--MessageHandler--请求响应式--收发消息--request：{request.ToJson()}--response:{response.ToJson()}");
+                // Log.Info($"pxq--MessageHandler--请求响应式--收发消息--request：{request.ToJson()}--response:{response.ToJson()}");
                 fiber.Root.GetComponent<ProcessInnerSender>().Reply(fromAddress, response);
             }
             catch (Exception e)

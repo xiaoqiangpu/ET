@@ -1,5 +1,9 @@
-﻿namespace ET
+﻿using TrueSync;
+
+namespace ET
 {
+	[FriendOf(typeof(LSRigidBody))]
+	[FriendOf(typeof(LSCollider))]
     public static partial class LSUnitFactory
     {
         public static LSUnit Init(LSWorld lsWorld, LockStepUnitInfo unitInfo)
@@ -38,6 +42,21 @@
 	        // 它的 View 层表现（加载模型）由 EventSystem 处理
              
 	        return unit;
+        }
+        
+        // 2. 扩展：给玩家添加物理 (需要修改原有的 Create 方法或在外部调用)
+        // 建议在原有 CreatePlayer 的逻辑后补充：
+        public static void AddPlayerPhysics(Unit unit)
+        {
+	        // 加刚体
+	        var rb = unit.AddComponent<LSRigidBody>();
+	        rb.Mass = 1;
+	        rb.UseGravity = true;
+
+	        // 加碰撞体 (球体半径 0.5)
+	        var col = unit.AddComponent<LSCollider, LSColliderType>(LSColliderType.Sphere);
+	        col.Radius = 0.5f;
+	        col.Offset = new TSVector(0, 0.5f, 0); // 抬高一点防止陷地
         }
     }
 }

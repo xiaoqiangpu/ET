@@ -86,6 +86,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// ET.IAwakeSystem<object>
 	// ET.LateUpdateSystem<object>
 	// ET.ListComponent<Unity.Mathematics.float3>
+	// ET.ListComponent<object>
 	// ET.Singleton<object>
 	// ET.StateMachineWrap<ET.Client.A2NetClient_MessageHandler.<Run>d__0>
 	// ET.StateMachineWrap<ET.Client.A2NetClient_RequestHandler.<Run>d__0>
@@ -363,13 +364,17 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.EqualityComparer<object>
 	// System.Collections.Generic.EqualityComparer<uint>
 	// System.Collections.Generic.EqualityComparer<ushort>
+	// System.Collections.Generic.HashSet.Enumerator<ET.EntityRef<object>>
 	// System.Collections.Generic.HashSet.Enumerator<object>
 	// System.Collections.Generic.HashSet.Enumerator<ushort>
+	// System.Collections.Generic.HashSet<ET.EntityRef<object>>
 	// System.Collections.Generic.HashSet<object>
 	// System.Collections.Generic.HashSet<ushort>
+	// System.Collections.Generic.HashSetEqualityComparer<ET.EntityRef<object>>
 	// System.Collections.Generic.HashSetEqualityComparer<object>
 	// System.Collections.Generic.HashSetEqualityComparer<ushort>
 	// System.Collections.Generic.ICollection<DotRecast.Detour.StraightPathItem>
+	// System.Collections.Generic.ICollection<ET.EntityRef<object>>
 	// System.Collections.Generic.ICollection<ET.MessageSessionDispatcherInfo>
 	// System.Collections.Generic.ICollection<ET.NumericWatcherInfo>
 	// System.Collections.Generic.ICollection<ET.RpcInfo>
@@ -398,6 +403,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.IComparer<object>
 	// System.Collections.Generic.IDictionary<object,object>
 	// System.Collections.Generic.IEnumerable<DotRecast.Detour.StraightPathItem>
+	// System.Collections.Generic.IEnumerable<ET.EntityRef<object>>
 	// System.Collections.Generic.IEnumerable<ET.MessageSessionDispatcherInfo>
 	// System.Collections.Generic.IEnumerable<ET.NumericWatcherInfo>
 	// System.Collections.Generic.IEnumerable<ET.RpcInfo>
@@ -416,6 +422,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.IEnumerable<object>
 	// System.Collections.Generic.IEnumerable<ushort>
 	// System.Collections.Generic.IEnumerator<DotRecast.Detour.StraightPathItem>
+	// System.Collections.Generic.IEnumerator<ET.EntityRef<object>>
 	// System.Collections.Generic.IEnumerator<ET.MessageSessionDispatcherInfo>
 	// System.Collections.Generic.IEnumerator<ET.NumericWatcherInfo>
 	// System.Collections.Generic.IEnumerator<ET.RpcInfo>
@@ -433,6 +440,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Collections.Generic.IEnumerator<long>
 	// System.Collections.Generic.IEnumerator<object>
 	// System.Collections.Generic.IEnumerator<ushort>
+	// System.Collections.Generic.IEqualityComparer<ET.EntityRef<object>>
 	// System.Collections.Generic.IEqualityComparer<System.Collections.Generic.KeyValuePair<int,object>>
 	// System.Collections.Generic.IEqualityComparer<System.Collections.Generic.KeyValuePair<long,object>>
 	// System.Collections.Generic.IEqualityComparer<int>
@@ -576,6 +584,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.Func<object>
 	// System.Linq.Buffer<ET.RpcInfo>
 	// System.Predicate<DotRecast.Detour.StraightPathItem>
+	// System.Predicate<ET.EntityRef<object>>
 	// System.Predicate<ET.MessageSessionDispatcherInfo>
 	// System.Predicate<ET.NumericWatcherInfo>
 	// System.Predicate<System.Collections.Generic.KeyValuePair<int,object>>

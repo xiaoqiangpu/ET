@@ -27,6 +27,10 @@ namespace ET.Client
             
             room.AddComponent<LSClientUpdater>();
 
+            //pxq---AddPhysics
+            root.AddComponent<LSPhysicsWorld>();
+            //--------
+            
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(root, new LSSceneInitFinish());
         }

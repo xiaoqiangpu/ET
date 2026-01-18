@@ -41,10 +41,13 @@
     <type fullname="MongoDB.Bson.Serialization.Options.DictionaryRepresentation" preserve="all" />
   </assembly>
   <assembly fullname="System">
+    <type fullname="System.CodeDom.Compiler.GeneratedCodeAttribute" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/Enumerator" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection/Enumerator" preserve="all" />
+    <type fullname="System.ComponentModel.EditorBrowsableAttribute" preserve="all" />
+    <type fullname="System.ComponentModel.EditorBrowsableState" preserve="all" />
     <type fullname="System.Net.EndPoint" preserve="all" />
     <type fullname="System.Net.IPAddress" preserve="all" />
     <type fullname="System.Net.IPEndPoint" preserve="all" />
@@ -91,6 +94,7 @@
     <type fullname="ET.DisposeObject" preserve="all" />
     <type fullname="ET.DoubleMap`2" preserve="all" />
     <type fullname="ET.EnableAccessEntiyChildAttribute" preserve="all" />
+    <type fullname="ET.EnableClassAttribute" preserve="all" />
     <type fullname="ET.EnableMethodAttribute" preserve="all" />
     <type fullname="ET.Entity" preserve="all" />
     <type fullname="ET.EntityHelper" preserve="all" />
@@ -217,6 +221,7 @@
     <type fullname="ET.ETTaskHelper" preserve="all" />
     <type fullname="ET.ETTask`1" preserve="all" />
     <type fullname="TrueSync.FP" preserve="all" />
+    <type fullname="TrueSync.TSMath" preserve="all" />
     <type fullname="TrueSync.TSMatrix" preserve="all" />
     <type fullname="TrueSync.TSQuaternion" preserve="all" />
     <type fullname="TrueSync.TSRandom" preserve="all" />
@@ -323,9 +328,10 @@
     <type fullname="System.Runtime.CompilerServices.IAsyncStateMachine" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.IsReadOnlyAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
+    <type fullname="System.Runtime.CompilerServices.RuntimeHelpers" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.TaskAwaiter" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.TaskAwaiter`1" preserve="all" />
-    <type fullname="System.Runtime.Versioning.TargetFrameworkAttribute" preserve="all" />
+    <type fullname="System.RuntimeFieldHandle" preserve="all" />
     <type fullname="System.RuntimeTypeHandle" preserve="all" />
     <type fullname="System.Security.Permissions.SecurityAction" preserve="all" />
     <type fullname="System.Security.Permissions.SecurityPermissionAttribute" preserve="all" />
