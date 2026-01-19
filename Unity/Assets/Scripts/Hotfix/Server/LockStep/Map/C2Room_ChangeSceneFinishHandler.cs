@@ -9,6 +9,9 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, C2Room_ChangeSceneFinish message)
         {
+            
+            Log.Info($"pxq--Server--CreateRoom--name:{root.Name}--InstanceId:{root.InstanceId}--msg:{message.ToJson()}");
+            
             Room room = root.GetComponent<Room>();
             RoomServerComponent roomServerComponent = room.GetComponent<RoomServerComponent>();
             RoomPlayer roomPlayer = room.GetComponent<RoomServerComponent>().GetChild<RoomPlayer>(message.PlayerId);

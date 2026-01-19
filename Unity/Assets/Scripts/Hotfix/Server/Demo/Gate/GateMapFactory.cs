@@ -6,15 +6,7 @@ namespace ET.Server
         {
             await ETTask.CompletedTask;
             Log.Info($"pxq--Server--GateMapFactory--CreateScene name:{name}---");
-            Scene scene = null;
-            if (name != "Map3")
-            {
-                scene = EntitySceneFactory.CreateScene(parent, id, instanceId, SceneType.Map, name);
-            }
-            else
-            {
-                scene = LSSceneFactory.Create(parent, id, instanceId, name);
-            }
+            Scene scene =   scene = EntitySceneFactory.CreateScene(parent, id, instanceId, SceneType.Map, name);
             
             scene.AddComponent<UnitComponent>();
             scene.AddComponent<AOIManagerComponent>();

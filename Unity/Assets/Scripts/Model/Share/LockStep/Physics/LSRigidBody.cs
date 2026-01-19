@@ -5,8 +5,8 @@ namespace ET
     /// 刚体组件
     /// 挂在Unit上，赋予物体物理特性（质量、速度）
     /// </summary>
-    [ComponentOf(typeof(Unit))]
-    public class LSRigidBody : Entity, IAwake, IDestroy
+    [ComponentOf(typeof(LSUnit))]
+    public class LSRigidBody : LSEntity, IAwake, IDestroy
     {
         /// <summary>
         /// 线性速度

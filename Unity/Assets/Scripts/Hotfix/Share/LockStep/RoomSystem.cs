@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MongoDB.Bson;
 
 namespace ET
 {
@@ -14,6 +15,8 @@ namespace ET
         
         public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime, int frame = -1)
         {
+            Log.Info($"pxq--Server--LS--InitRoom--unitInfos:{unitInfos.ToJson()}---");
+            
             self.StartTime = startTime;
             self.AuthorityFrame = frame;
             self.PredictionFrame = frame;

@@ -1,6 +1,5 @@
 namespace ET.Client
 {
-
     /// <summary>
     /// 帧同步-场景切换
     /// </summary>
@@ -9,32 +8,43 @@ namespace ET.Client
         // 场景切换协程
         public static async ETTask SceneChangeTo(Scene root, string sceneName, long sceneInstanceId)
         {
+            Log.Info($"pxq--Client--LS--Create Rooom---sceneName:{sceneName}---");
             root.RemoveComponent<Room>();
 
             Room room = root.AddComponentWithId<Room>(sceneInstanceId);
             room.Name = sceneName;
 
             // 等待表现层订阅的事件完成
-            await EventSystem.Instance.PublishAsync(root, new LSSceneChangeStart() {Room = room});
+            await EventSystem.Instance.PublishAsync(root, new LSSceneChangeStart() { Room = room });
 
             root.GetComponent<ClientSenderComponent>().Send(C2Room_ChangeSceneFinish.Create());
-            
+
             // 等待Room2C_EnterMap消息
             WaitType.Wait_Room2C_Start waitRoom2CStart = await root.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_Start>();
 
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(waitRoom2CStart.Message.UnitInfo, waitRoom2CStart.Message.StartTime);
-            
+
             room.AddComponent<LSClientUpdater>();
 
-            //pxq---AddPhysics
-            root.AddComponent<LSPhysicsWorld>();
-            //--------
+            //pxq---AddPhysics-----
             
+            string phySceneName = "PhysicsScene";
+            Scene phyScene = EntitySceneFactory.CreateScene(room, IdGenerater.Instance.GenerateId(),
+                                                                IdGenerater.Instance.GenerateInstanceId(),
+                                                                SceneType.LockStep,phySceneName);
+            phyScene.AddComponent<LSPhysicsWorld>();
+            phyScene.AddComponent<UnitComponent>();
+
+            // 3. 加载墙壁数据
+            MapObstacleLoader.Load(phyScene, sceneName);
+
+            //--------
+
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(root, new LSSceneInitFinish());
         }
-        
+
         // 场景切换协程
         public static async ETTask SceneChangeToReplay(Scene root, Replay replay)
         {
@@ -47,16 +57,15 @@ namespace ET.Client
             room.Replay = replay;
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(replay.UnitInfos, TimeInfo.Instance.ServerFrameTime());
-            
+
             // 等待表现层订阅的事件完成
-            await EventSystem.Instance.PublishAsync(root, new LSSceneChangeStart() {Room = room});
-            
+            await EventSystem.Instance.PublishAsync(root, new LSSceneChangeStart() { Room = room });
 
             room.AddComponent<LSReplayUpdater>();
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(root, new LSSceneInitFinish());
         }
-        
+
         // 场景切换协程
         public static async ETTask SceneChangeToReconnect(Scene root, G2C_Reconnect message)
         {
@@ -65,13 +74,12 @@ namespace ET.Client
             Room room = root.AddComponent<Room>();
             // room.Name = "Map1";  //pxq--
             room.Name = "Map3";
-            
+
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(message.UnitInfos, message.StartTime, message.Frame);
-            
-            // 等待表现层订阅的事件完成
-            await EventSystem.Instance.PublishAsync(root, new LSSceneChangeStart() {Room = room});
 
+            // 等待表现层订阅的事件完成
+            await EventSystem.Instance.PublishAsync(root, new LSSceneChangeStart() { Room = room });
 
             room.AddComponent<LSClientUpdater>();
             // 这个事件中可以订阅取消loading

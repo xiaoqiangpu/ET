@@ -7,7 +7,7 @@ namespace ET
 {
     [ChildOf(typeof(LSUnitComponent))]
     [MemoryPackable]
-    public partial class LSUnit: LSEntity, IAwake, ISerializeToEntity
+    public partial class LSUnit: LSEntity, IAwake, ISerializeToEntity, IAwake<int>
     {
         public TSVector Position
         {

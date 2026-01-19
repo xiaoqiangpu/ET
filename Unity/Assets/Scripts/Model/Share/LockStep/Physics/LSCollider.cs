@@ -7,8 +7,8 @@ namespace ET
     /// 碰撞体组件
     /// 可定义碰撞体形状
     /// </summary>
-    [ComponentOf(typeof(Unit))]
-    public class LSCollider : Entity, IAwake<LSColliderType>, IDestroy
+    [ComponentOf(typeof(LSUnit))]
+    public class LSCollider : LSEntity, IAwake<LSColliderType>, IDestroy
     {
         public LSColliderType ShapeType;
 

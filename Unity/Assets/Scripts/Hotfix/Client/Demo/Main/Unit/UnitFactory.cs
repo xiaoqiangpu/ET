@@ -35,11 +35,7 @@ namespace ET.Client
 	        unit.AddComponent<ObjectWait>();
 
 	        unit.AddComponent<XunLuoPathComponent>();
-	        //pxq--add-----------
-	        LSCollider unitCol= unit.AddComponent<LSCollider, LSColliderType>(LSColliderType.Sphere);
-	        unitCol.Radius = 0.5f;
-	        unit.AddComponent<LSRigidBody>();
-	        //--------------------
+	        
 	        EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
             return unit;
         }

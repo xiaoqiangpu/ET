@@ -15,7 +15,8 @@ namespace ET
         private static void Awake(this ET.LSPhysicsWorld self)
         {
             // 打印日志：包含组件名称和它挂载的场景ID
-            Log.Info($"pxq--[物理系统] LSPhysicsWorld 组件已成功挂载到场景! SceneName: {self.GetParent<Scene>().Name}, ID: {self.Id}");
+            
+            Log.Info($"pxq--[物理系统] Awake---{self.Fiber().Root.Name}---SceneName: {self.GetParent<Scene>().Name}--ID: {self.Id}--InstanceId:{self.InstanceId}");
             
             // 打印当前已有的碰撞体数量 (刚初始化应该是 0，除非你在 Factory 里先加了阻挡)
             Log.Info($"pxq--[物理系统] 当前碰撞体数量: {self.Colliders.Count}");
@@ -52,7 +53,7 @@ namespace ET
             foreach (LSCollider collider in activeColliders)
             {
                 // 获取父节点 Unit
-                Unit unit = collider.GetParent<Unit>();
+                LSUnit unit = collider.GetParent<LSUnit>();
                 if (unit == null) continue;
 
                 // 更新包围盒 (AABB)，用于后续检测
@@ -80,7 +81,7 @@ namespace ET
                     TSVector currentPos = new TSVector(unit.Position.x, unit.Position.y, unit.Position.z);
                     TSVector nextPos = currentPos + move;
                     
-                    unit.Position = new Unity.Mathematics.float3(nextPos.x.AsFloat(), nextPos.y.AsFloat(), nextPos.z.AsFloat());
+                    unit.Position = new TSVector(nextPos.x, nextPos.y, nextPos.z);
                 }
             }
 
@@ -131,8 +132,8 @@ namespace ET
                 return; 
             }
 
-            Unit u1 = c1.GetParent<Unit>();
-            Unit u2 = c2.GetParent<Unit>();
+            LSUnit      u1  = c1.GetParent<LSUnit>();
+            LSUnit      u2  = c2.GetParent<LSUnit>();
             LSRigidBody rb1 = u1.GetComponent<LSRigidBody>();
             LSRigidBody rb2 = u2.GetComponent<LSRigidBody>();
 
@@ -169,11 +170,11 @@ namespace ET
         /// <summary>
         /// 辅助方法：应用位置修正
         /// </summary>
-        private static void ApplyPos(Unit unit, TSVector offset)
+        private static void ApplyPos(LSUnit unit, TSVector offset)
         {
              TSVector pos = new TSVector(unit.Position.x, unit.Position.y, unit.Position.z);
              pos += offset;
-             unit.Position = new Unity.Mathematics.float3(pos.x.AsFloat(), pos.y.AsFloat(), pos.z.AsFloat());
+             unit.Position = pos;
         }
         
         

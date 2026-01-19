@@ -21,7 +21,7 @@ namespace ET.Server
             root.AddComponent<RoomManagerComponent>();
             root.AddComponent<LocationProxyComponent>();
             root.AddComponent<MessageLocationSenderComponent>();
-
+            Log.Info($"pxq--Server--FiberInit_Map--root name:{root.Name}--InstanceId:{root.InstanceId}");
             await ETTask.CompletedTask;
         }
     }

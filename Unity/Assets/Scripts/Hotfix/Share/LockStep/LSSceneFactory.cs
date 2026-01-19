@@ -7,12 +7,14 @@
             // 1. 创建毛坯房
             Scene lsScene = EntitySceneFactory.CreateScene(parent, id, instanceId, SceneType.LockStep, name);
 
+            lsScene.AddComponent<UnitComponent>();
+            
             // 2. 挂载物理世界 (必须!)
             lsScene.AddComponent<LSPhysicsWorld>();
-
+            
             // 3. 加载墙壁数据
             MapObstacleLoader.Load(lsScene, name);
-
+            Log.Info($"pxq---Share--LSSceneFactory.Create--name:{name}");
             return lsScene;
         }
     }

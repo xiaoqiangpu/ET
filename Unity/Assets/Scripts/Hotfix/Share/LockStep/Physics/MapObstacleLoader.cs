@@ -1,9 +1,11 @@
 using System.IO;
+using MongoDB.Bson;
 using TrueSync;
 
 namespace ET
 {
     [FriendOf(typeof(ET.LSCollider))]
+    [FriendOf(typeof(LSPhysicsWorld))]
     public static class MapObstacleLoader
     {
         public static void Load(Scene lsScene, string mapName)
@@ -22,9 +24,9 @@ namespace ET
             {
                 // 1. 创建障碍物 Unit
                 // 使用 UnitType.Obstacle (需要在 UnitType枚举中添加，或者暂时用普通Unit)
-                Unit obstacle = LSUnitFactory.CreateObstacle(lsScene);
+                LSUnit obstacle = LSUnitFactory.CreateObstacle(lsScene);
                 // 2. 设置位置 (从 Unity 导出的 float 转为 float3)
-                obstacle.Position = new Unity.Mathematics.float3(data.x, data.y, data.z);
+                obstacle.Position =new TSVector((FP)data.x, data.y, data.z);
 
                 // 3. 添加碰撞组件 (Box)
                 var collider = obstacle.AddComponent<LSCollider, LSColliderType>(LSColliderType.Box);
@@ -39,7 +41,6 @@ namespace ET
                 // 6. 初始化包围盒
                 LSPhysicsMath.UpdateAABB(collider);
             }
-
             Log.Info($"pxq--地图 {mapName} 物理阻挡加载完成，共 {config.obstacles.Count} 个。");
         }
     }
