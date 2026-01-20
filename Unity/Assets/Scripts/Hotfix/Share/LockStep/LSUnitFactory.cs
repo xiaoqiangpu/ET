@@ -20,7 +20,7 @@ namespace ET
 			//---pxq---AddPhysics-------
 			
 			Log.Info($"pxq--Init Unit--Unit InstanceId:{lsUnit.InstanceId}--");
-			LSUnitFactory.AddPlayerPhysics(lsUnit);
+			// LSUnitFactory.AddPlayerPhysics(lsUnit);
 			
 			//--------------------------
 			
@@ -32,20 +32,17 @@ namespace ET
         /// 在 Share 层创建障碍物 Unit
         /// 这个方法既可以在客户端预测时跑，也可以在服务器逻辑中跑
         /// </summary>
-        public static LSUnit CreateObstacle(Scene scene)
+        public static LSUnit CreateObstacle(LSUnitComponent lsUnitComponent)
         {
-	        // 1. 获取当前场景的 UnitComponent
-	        LSUnitComponent lsUnitComponent = scene.GetComponent<LSUnitComponent>();
-             
-	        // 2. 生成 ID
+	        // 1. 生成 ID
 	        long id = IdGenerater.Instance.GenerateId();
              
-	        // 3. 创建 Unit
+	        // 2. 创建 Unit
 	        // 这里的 1005 是 ConfigId。作为 Obstacle.障碍物虽然不需要属性，但 Unit 结构通常依赖配置
 	        LSUnit lsUnit = lsUnitComponent.AddChildWithId<LSUnit, int>(id, 1005);
              
-	        // 4. (可选) 设置类型，方便后续逻辑判断
-	        // unit.Type = UnitType.Obstacle; 
+	        // 3. (可选) 设置类型，方便后续逻辑判断
+	        //unit.Type = UnitType.Obstacle; 
     
 	        // 5. 此时 unit 只是一个纯逻辑对象，没有 GameObject，也没有 MailBox
 	        // 它的 View 层表现（加载模型）由 EventSystem 处理

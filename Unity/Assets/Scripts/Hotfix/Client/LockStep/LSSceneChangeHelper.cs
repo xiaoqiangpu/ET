@@ -8,7 +8,7 @@ namespace ET.Client
         // 场景切换协程
         public static async ETTask SceneChangeTo(Scene root, string sceneName, long sceneInstanceId)
         {
-            Log.Info($"pxq--Client--LS--Create Rooom---sceneName:{sceneName}---");
+            Log.Info($"pxq--Client--LockStep--CreateRooom---sceneName:{sceneName}---");
             root.RemoveComponent<Room>();
 
             Room room = root.AddComponentWithId<Room>(sceneInstanceId);
@@ -24,23 +24,8 @@ namespace ET.Client
 
             room.LSWorld = new LSWorld(SceneType.LockStepClient);
             room.Init(waitRoom2CStart.Message.UnitInfo, waitRoom2CStart.Message.StartTime);
-
             room.AddComponent<LSClientUpdater>();
-
-            //pxq---AddPhysics-----
             
-            string phySceneName = "PhysicsScene";
-            Scene phyScene = EntitySceneFactory.CreateScene(room, IdGenerater.Instance.GenerateId(),
-                                                                IdGenerater.Instance.GenerateInstanceId(),
-                                                                SceneType.LockStep,phySceneName);
-            phyScene.AddComponent<LSPhysicsWorld>();
-            phyScene.AddComponent<UnitComponent>();
-
-            // 3. 加载墙壁数据
-            MapObstacleLoader.Load(phyScene, sceneName);
-
-            //--------
-
             // 这个事件中可以订阅取消loading
             EventSystem.Instance.Publish(root, new LSSceneInitFinish());
         }

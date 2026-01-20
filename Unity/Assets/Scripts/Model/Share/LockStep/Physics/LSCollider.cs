@@ -66,8 +66,8 @@ namespace ET
         {
             get
             {
-                Unit     unit    =this.GetParent<Unit>();
-                TSVector unitPos = new TSVector(unit.Position.x, unit.Position.y, unit.Position.z);
+                LSUnit   unit    =this.GetParent<LSUnit>();
+                TSVector unitPos = unit.Position;
                 return unitPos + this.Offset;
             }
         }

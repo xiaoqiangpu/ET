@@ -15,7 +15,7 @@ namespace ET
         
         public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime, int frame = -1)
         {
-            Log.Info($"pxq--Server--LS--InitRoom--unitInfos:{unitInfos.ToJson()}---");
+            Log.Info($"pxq--Room.Init--name:{self.Name}--{unitInfos.ToJson()}---");
             
             self.StartTime = startTime;
             self.AuthorityFrame = frame;
@@ -25,7 +25,12 @@ namespace ET
             self.FixedTimeCounter = new FixedTimeCounter(self.StartTime, 0, LSConstValue.UpdateInterval);
             LSWorld lsWorld = self.LSWorld;
             lsWorld.Frame = frame + 1;
+            
             lsWorld.AddComponent<LSUnitComponent>();
+            lsWorld.AddComponent<LSPhysicsWorld>();
+            MapObstacleLoader.Load(lsWorld,self.Name);
+            
+            //Init UnitInfo
             for (int i = 0; i < unitInfos.Count; ++i)
             {
                 LockStepUnitInfo unitInfo = unitInfos[i];

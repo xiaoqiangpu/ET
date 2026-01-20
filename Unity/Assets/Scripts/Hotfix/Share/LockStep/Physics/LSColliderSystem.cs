@@ -7,28 +7,28 @@ namespace ET
     [FriendOf(typeof(LSCollider))]
     public static partial class LSColliderSystem
     {
-        
-        
         [EntitySystem]
         private static void Awake(this ET.LSCollider self, ET.LSColliderType type)
         {
             self.ShapeType = type;
             
-            Unit           unit          = self.GetParent<Unit>();
-            UnitComponent  unitComponent = unit.GetParent<UnitComponent>();
-            Scene          phyScene      = unitComponent.GetParent<Scene>();
-            LSPhysicsWorld world = phyScene.GetComponent<LSPhysicsWorld>();
-            world?.Colliders.Add(self);
+            LSPhysicsWorld lsPhyWorld = GetPhysicsWorld(self);
+            lsPhyWorld?.Colliders.Add(self);
         }
 
         [EntitySystem]
         private static void Destroy(this ET.LSCollider self)
         {
-            Unit           unit          = self.GetParent<Unit>();
-            UnitComponent  unitComponent = unit.GetParent<UnitComponent>();
-            Scene          phyScene      = unitComponent.GetParent<Scene>();
-            LSPhysicsWorld world         = phyScene.GetComponent<LSPhysicsWorld>();
-            world?.Colliders.Remove(self);
+            LSPhysicsWorld lsPhyWorld = GetPhysicsWorld(self);
+            lsPhyWorld?.Colliders.Remove(self);
+        }
+        
+        private static LSPhysicsWorld GetPhysicsWorld(LSCollider collider)
+        {
+            LSUnit unit = collider.GetParent<LSUnit>();
+            LSUnitComponent unitComponent = unit.GetParent<LSUnitComponent>();
+            LSWorld lsWorld = unitComponent.GetParent<LSWorld>();
+            return lsWorld.GetComponent<LSPhysicsWorld>();
         }
     }
 }

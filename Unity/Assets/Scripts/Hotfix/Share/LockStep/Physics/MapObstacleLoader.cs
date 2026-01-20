@@ -1,21 +1,24 @@
 using System.IO;
-using MongoDB.Bson;
 using TrueSync;
 
 namespace ET
 {
-    [FriendOf(typeof(ET.LSCollider))]
-    [FriendOf(typeof(LSPhysicsWorld))]
+    [FriendOf(typeof(LSCollider))]
+    // [FriendOf(typeof(LSPhysicsWorld))]
     public static class MapObstacleLoader
     {
-        public static void Load(Scene lsScene, string mapName)
+        public static void Load(LSWorld lsWorld, string mapName)
         {
+            LSUnitComponent lsUnitComponent = lsWorld.GetComponent<LSUnitComponent>();
+            if (lsUnitComponent == null)
+            {
+                lsUnitComponent = lsWorld.AddComponent<LSUnitComponent>();
+            }
+
             // 路径根据实际运行环境调整，编辑器模式下 ../Config
             string path = $"../Config/MapObstacles/{mapName}.json";
-
             if (!File.Exists(path)) return;
-
-            string json = File.ReadAllText(path);
+            string            json   = File.ReadAllText(path);
             MapObstacleConfig config = MongoHelper.FromJson<MapObstacleConfig>(json);
 
             if (config?.obstacles == null) return;
@@ -24,9 +27,9 @@ namespace ET
             {
                 // 1. 创建障碍物 Unit
                 // 使用 UnitType.Obstacle (需要在 UnitType枚举中添加，或者暂时用普通Unit)
-                LSUnit obstacle = LSUnitFactory.CreateObstacle(lsScene);
+                LSUnit obstacle = LSUnitFactory.CreateObstacle(lsUnitComponent);
                 // 2. 设置位置 (从 Unity 导出的 float 转为 float3)
-                obstacle.Position =new TSVector((FP)data.x, data.y, data.z);
+                obstacle.Position = new TSVector((FP)data.x, data.y, data.z);
 
                 // 3. 添加碰撞组件 (Box)
                 var collider = obstacle.AddComponent<LSCollider, LSColliderType>(LSColliderType.Box);
@@ -41,7 +44,12 @@ namespace ET
                 // 6. 初始化包围盒
                 LSPhysicsMath.UpdateAABB(collider);
             }
+
             Log.Info($"pxq--地图 {mapName} 物理阻挡加载完成，共 {config.obstacles.Count} 个。");
+
+            // LSPhysicsWorld lsPhyWorld = lsWorld.GetComponent<LSPhysicsWorld>();
+            // if (lsPhyWorld != null)
+            //     Log.Info($"pxq--MapObstacle--(LSUnit) 加载完毕! 物理对象: {lsPhyWorld.Colliders.Count}");
         }
     }
 }

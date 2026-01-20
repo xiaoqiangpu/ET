@@ -16,18 +16,7 @@ namespace ET.Client
             CurrentScenesComponent currentScenesComponent = root.GetComponent<CurrentScenesComponent>();
             currentScenesComponent.Scene?.Dispose(); // 删除之前的CurrentScene，创建新的
 
-            Scene currentScene = null;
-            if(sceneName!="Map3")
-            {
-                currentScene = CurrentSceneFactory.Create(sceneInstanceId, sceneName, currentScenesComponent);
-            }
-            else
-            {
-                //pxq---新增---
-                currentScene = LSSceneFactory.Create(currentScenesComponent, sceneInstanceId, IdGenerater.Instance.GenerateInstanceId(), sceneName);
-            }
-            
-            
+            Scene currentScene = currentScene = CurrentSceneFactory.Create(sceneInstanceId, sceneName, currentScenesComponent);
             
             UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
             
