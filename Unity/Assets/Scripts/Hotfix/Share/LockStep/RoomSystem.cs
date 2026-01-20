@@ -25,7 +25,7 @@ namespace ET
             self.FixedTimeCounter = new FixedTimeCounter(self.StartTime, 0, LSConstValue.UpdateInterval);
             LSWorld lsWorld = self.LSWorld;
             lsWorld.Frame = frame + 1;
-            
+            //---pxq---AddPhysics---
             lsWorld.AddComponent<LSUnitComponent>();
             lsWorld.AddComponent<LSPhysicsWorld>();
             MapObstacleLoader.Load(lsWorld,self.Name);

@@ -20,7 +20,8 @@ namespace ET
 			//---pxq---AddPhysics-------
 			
 			Log.Info($"pxq--Init Unit--Unit InstanceId:{lsUnit.InstanceId}--");
-			// LSUnitFactory.AddPlayerPhysics(lsUnit);
+			
+			AddPlayerPhysics(lsUnit);
 			
 			//--------------------------
 			
@@ -58,6 +59,7 @@ namespace ET
 	        //Add Rigidbody
 	        var rb = unit.AddComponent<LSRigidBody>();
 	        rb.Mass = 1;
+	        rb.Drag = 0.1f;
 	        rb.UseGravity = true;
 	        rb.IsKinematic = false;
 

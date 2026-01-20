@@ -9,7 +9,7 @@ namespace ET
     /// 挂在Scene上，单例管理所有物理对象
     /// </summary>
     [ComponentOf(typeof(LSWorld))]
-    public class LSPhysicsWorld:LSEntity,IAwake,IUpdate,IDestroy
+    public class LSPhysicsWorld:LSEntity,IAwake,ILSUpdate,IDestroy
     {
         /// <summary>
         /// 所有碰撞体

@@ -64,60 +64,34 @@ namespace ET
             normal = TSVector.zero;
             depth = 0;
 
-            // 1. 球 vs 球
+            // 1. Sphere(c1) vs Sphere(c2)
             if (c1.ShapeType == LSColliderType.Sphere && c2.ShapeType == LSColliderType.Sphere)
             {
+                // SphereVsSphere 内部计算是 p1 - p2，方向指向 p1 (c1)。符合标准。
                 return SphereVsSphere(c1.WorldCenter, c1.Radius, c2.WorldCenter, c2.Radius, out normal, out depth);
             }
 
-            // 2. 球 vs 盒
+            // 2. Sphere(c1) vs Box(c2)
             if (c1.ShapeType == LSColliderType.Sphere && c2.ShapeType == LSColliderType.Box)
             {
+                // SphereVsBox 返回的法线是指向 Sphere (c1) 的。符合标准。
                 return SphereVsBox(c1.WorldCenter, c1.Radius, c2.WorldCenter, c2.Size, out normal, out depth);
             }
 
+            // 3. Box(c1) vs Sphere(c2)
             if (c1.ShapeType == LSColliderType.Box && c2.ShapeType == LSColliderType.Sphere)
             {
+                // SphereVsBox 返回的法线是指向 Sphere (c2) 的。
                 bool hit = SphereVsBox(c2.WorldCenter, c2.Radius, c1.WorldCenter, c1.Size, out normal, out depth);
-                normal = -1 * normal; // 反转法线
+                
+                // 【核心修正】
+                // 我们的标准是：Normal 指向 c1。
+                // 现在的 Normal 指向 c2。
+                // 所以必须取反！
+                normal = -1*normal; 
                 return hit;
             }
 
-            // 3. 盒 vs 盒 (简化版：仅处理无旋转 AABB)
-            if (c1.ShapeType == LSColliderType.Box && c2.ShapeType == LSColliderType.Box)
-            {
-                return AABBVsAABB(c1, c2, out normal, out depth);
-            }
-
-            
-            //TODO: 胶囊体数学较复杂，通常拆解为 线段 vs 图形。这里为了篇幅暂略，临时用 Sphere 近似代替----后续待完善--pxq
-            //4.胶囊 vs 胶囊
-            if (c1.ShapeType == LSColliderType.Capsule && c2.ShapeType == LSColliderType.Capsule)
-            {
-                return SphereVsSphere(c1.WorldCenter, c1.Radius, c2.WorldCenter, c2.Radius, out normal, out depth);
-            }
-            //5.胶囊 vs 球
-            if (c1.ShapeType == LSColliderType.Capsule && c2.ShapeType == LSColliderType.Sphere)
-            {
-                return SphereVsSphere(c1.WorldCenter, c1.Radius, c2.WorldCenter, c2.Radius, out normal, out depth);
-            }
-            
-            if (c1.ShapeType == LSColliderType.Sphere && c2.ShapeType == LSColliderType.Capsule)
-            {
-                return SphereVsSphere(c2.WorldCenter, c2.Radius, c1.WorldCenter, c1.Radius, out normal, out depth);
-            }
-            
-            //6.胶囊 vs 盒
-            if (c1.ShapeType == LSColliderType.Capsule && c2.ShapeType == LSColliderType.Box)
-            {
-                return SphereVsBox(c1.WorldCenter, c1.Radius, c2.WorldCenter, c2.Size, out normal, out depth);
-            }
-            
-            if (c1.ShapeType == LSColliderType.Box && c2.ShapeType == LSColliderType.Capsule)
-            {
-                return SphereVsBox(c2.WorldCenter, c2.Radius, c1.WorldCenter, c1.Size, out normal, out depth);
-            }
-            
             return false;
         }
 
@@ -153,38 +127,71 @@ namespace ET
         {
             normal = TSVector.zero;
             depth = 0;
-
+            
+            // 计算半长宽
             TSVector halfSize = boxSize * FP.Half;
 
-            // 1. 将圆心转换到 Box 局部坐标 (假设 Box 无旋转)
+            // 1. 将球心转换到盒子的局部坐标系 (假设盒子无旋转)
             TSVector localPos = sphereCenter - boxCenter;
 
-            // 2. 寻找 Box 表面距离圆心最近的点 (Clamped Point)
+            // 2. 在盒子上寻找距离球心最近的点 (Clamped Point)
             TSVector closest = localPos;
             closest.x = TSMath.Clamp(closest.x, -halfSize.x, halfSize.x);
             closest.y = TSMath.Clamp(closest.y, -halfSize.y, halfSize.y);
             closest.z = TSMath.Clamp(closest.z, -halfSize.z, halfSize.z);
 
-            // 3. 计算距离
+            // 3. 计算球心到最近点的向量
             TSVector diff   = localPos - closest;
             FP       distSq = diff.sqrMagnitude;
-
-            if (distSq > radius * radius) return false;
-
-            FP dist = TSMath.Sqrt(distSq);
-
-            // 特殊情况：圆心在 Box 内部 (dist == 0)
-            if (dist == 0)
+            
+            // =======================================================
+            // 【情况 A】球心在盒子外面 (常规情况)
+            // =======================================================
+            if (distSq > 0)
             {
-                // 简单策略：找到离哪个面最近，就往哪推
-                // (这里省略具体判断，简单往 Y 轴推，实际需要判断6个面)
-                normal = TSVector.up;
-                depth = radius + halfSize.y;
+                // 如果距离超过半径，没撞上
+                if (distSq > radius * radius) return false;
+
+                FP dist = TSMath.Sqrt(distSq);
+                normal = diff / dist; // 方向：从最近点指向球心
+                depth = radius - dist;
                 return true;
             }
 
-            normal = diff / dist;
-            depth = radius - dist;
+            // =======================================================
+            // 【情况 B】球心在盒子内部 (穿透/深坑情况) - 核心修复 !!!
+            // =======================================================
+            // 此时 localPos == closest，diff 为 0。
+            // 玩家掉进地里，或者出生在地里时会发生这种情况。
+            // 我们需要找到离球心最近的那个面，把他推出去。
+
+            // 计算到各个面的距离 (绝对值)
+            FP distX = halfSize.x - TSMath.Abs(localPos.x);
+            FP distY = halfSize.y - TSMath.Abs(localPos.y);
+            FP distZ = halfSize.z - TSMath.Abs(localPos.z);
+
+            // 找到最小穿透深度，沿着那个轴推
+            // 对于地面来说，distY 通常是最小的 (因为地面很薄或者人是从上面掉下来的)
+            if (distY < distX && distY < distZ)
+            {
+                // 推向 Y 轴最近的一侧 (如果人在上半部分就往上推，下半部分往下推)
+                normal = localPos.y > 0 ? TSVector.up : TSVector.down;
+                // [优化] 不要直接加 Radius，这会导致球“跳”到地面上
+                // 只要推到表面即可，深度就是 distY (距离表面的距离) + Radius (球心距离表面的距离)
+                // 之前的逻辑 depth = distY + radius 其实是对的，但为了稳妥，我们加上 0.001 的微小偏移
+                depth = distY + radius+0.001f; // 推出表面 + 半径
+            }
+            else if (distX < distZ)
+            {
+                normal = localPos.x > 0 ? TSVector.right : TSVector.left;
+                depth = distX + radius;
+            }
+            else
+            {
+                normal = localPos.z > 0 ? TSVector.forward : TSVector.back;
+                depth = distZ + radius;
+            }
+
             return true;
         }
 

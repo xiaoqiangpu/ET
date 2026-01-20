@@ -114,7 +114,7 @@ namespace ET
                     minDistance = dist;
                     hitAny = true;
                     
-                    hitInfo.Entity = collider.GetParent<Unit>();
+                    hitInfo.Entity = collider.GetParent<LSUnit>();
                     hitInfo.Distance = dist;
                     hitInfo.Point = ray.Origin + ray.Direction * dist;
                     
