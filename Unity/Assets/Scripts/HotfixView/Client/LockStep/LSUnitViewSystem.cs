@@ -22,18 +22,18 @@ namespace ET.Client
             #region 优化调整
 
             // [优化] 初始化时直接同步一次位置，防止 GameObject 从 (0,0,0) 飞过来
-            LSUnit unit = self.GetUnit();
-            if (unit != null)
-            {
-                Vector3 initPos = unit.Position.ToVector(); // 扩展方法: TSVector -> Vector3
-                self.Transform.position = initPos;
-                self.Position = initPos; // 更新缓存
-                
-                if (unit.Forward != TSVector.zero)
-                {
-                    self.Transform.rotation = Quaternion.LookRotation(unit.Forward.ToVector());
-                }
-            }
+            // LSUnit unit = self.GetUnit();
+            // if (unit != null)
+            // {
+            //     Vector3 initPos = unit.Position.ToVector(); // 扩展方法: TSVector -> Vector3
+            //     self.Transform.position = initPos;
+            //     self.Position = initPos; // 更新缓存
+            //
+            //     if (unit.Forward != TSVector.zero)
+            //     {
+            //         self.Transform.rotation = Quaternion.LookRotation(unit.Forward.ToVector());
+            //     }
+            // }
 
             #endregion
         }
@@ -52,7 +52,7 @@ namespace ET.Client
         private static void Update(this LSUnitView self)
         {
             #region OldCode
-            
+
             // LSUnit unit = self.GetUnit();
             //
             // Vector3     unitPos = unit.Position.ToVector();
@@ -81,66 +81,41 @@ namespace ET.Client
             // self.t += Time.deltaTime;
             // self.Transform.rotation = Quaternion.Lerp(self.Transform.rotation, self.Rotation, self.t / 1f);
             // self.Transform.position = Vector3.Lerp(self.Transform.position, self.Position, self.t / self.totalTime);
-            
+
             #endregion
 
             #region NewCode
 
-             LSUnit unit = self.GetUnit();
-            if (unit == null || unit.IsDisposed) return;
+            LSUnit lsUnit = self.GetUnit();
+            if (lsUnit == null) return;
 
-            // ============================================================
-            // 1. 获取权威数据 (逻辑层数据)
-            // ============================================================
-            // 将定点数转为 Unity 浮点数
-            // 建议封装 ToVector() 扩展方法，或者手动 new Vector3(x.AsFloat()...)
-            Vector3 targetPos = new Vector3(unit.Position.x.AsFloat(), unit.Position.y.AsFloat(), unit.Position.z.AsFloat());
-            Vector3 targetFwd = new Vector3(unit.Forward.x.AsFloat(), unit.Forward.y.AsFloat(), unit.Forward.z.AsFloat());
+            // 1. 获取权威位置
+            Vector3 targetPos = lsUnit.Position.ToVector();
+            Vector3 targetFwd = lsUnit.Forward.ToVector();
 
-            // ============================================================
-            // 2. 位置同步 (替换掉了原来的 totalTime/speed2 逻辑)
-            // ============================================================
-            float distance = Vector3.Distance(self.Transform.position, targetPos);
-
-            // [防抖动阈值]
-            // 如果距离极小（比如浮点误差），就不动了，防止静止时微弱抖动
-            if (distance < 0.01f)
-            {
-                // do nothing or snap exact
-            }
-            // [瞬移阈值]
-            // 如果距离过大（超过2米，说明可能是传送、出生、或严重回滚），直接瞬移，不要插值
-            else if (distance > 2.0f)
+            // 2. 位置同步 (Lerp)
+            float dist = Vector3.Distance(self.Transform.position, targetPos);
+    
+            // 如果误差太大（>2米），瞬移纠正
+            if (dist > 2f) 
             {
                 self.Transform.position = targetPos;
-                self.Position = targetPos; // 更新缓存
             }
-            // [平滑跟随]
-            // 使用 Lerp 进行平滑过渡。15f 是跟随硬度，值越大跟得越紧，物理感越弱。
-            else
+            else 
             {
+                // 平滑跟随
                 self.Transform.position = Vector3.Lerp(self.Transform.position, targetPos, Time.deltaTime * 15f);
-                self.Position = targetPos; // 更新缓存
             }
 
-            // ============================================================
             // 3. 旋转同步
-            // ============================================================
-            if (targetFwd != Vector3.zero) // 防止零向量报错
+            if (targetFwd != Vector3.zero)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(targetFwd);
-                // 使用 Slerp 平滑旋转
-                self.Transform.rotation = Quaternion.Slerp(self.Transform.rotation, targetRotation, Time.deltaTime * 20f);
-                self.Rotation = targetRotation; // 更新缓存
+                self.Transform.rotation = Quaternion.Slerp(self.Transform.rotation, Quaternion.LookRotation(targetFwd), Time.deltaTime * 20f);
             }
-
-            // ============================================================
             // 4. 动画同步 (改为基于物理速度)
-            // ============================================================
-            UpdateAnimation(self, unit);
+            UpdateAnimation(self, lsUnit);
 
             #endregion
-            
         }
 
         private static void UpdateAnimation(LSUnitView self, LSUnit unit)
@@ -172,7 +147,7 @@ namespace ET.Client
 
             animator.SetFloatValue("Speed", speed);
         }
-        
+
         private static LSUnit GetUnit(this LSUnitView self)
         {
             LSUnit unit = self.Unit;
@@ -180,8 +155,9 @@ namespace ET.Client
             {
                 return unit;
             }
-
-            self.Unit = (self.IScene as Room).LSWorld.GetComponent<LSUnitComponent>().GetChild<LSUnit>(self.Id);
+            LSUnit lsUnit= (self.IScene as Room).LSWorld.GetComponent<LSUnitComponent>().GetChild<LSUnit>(self.Id);
+            self.Unit = lsUnit;
+            Log.Info($"pxq--LSUnitViewSystem--GetUnit--InstanceId:{lsUnit.InstanceId}");
             return self.Unit;
         }
     }

@@ -179,7 +179,7 @@ namespace ET
                 // [优化] 不要直接加 Radius，这会导致球“跳”到地面上
                 // 只要推到表面即可，深度就是 distY (距离表面的距离) + Radius (球心距离表面的距离)
                 // 之前的逻辑 depth = distY + radius 其实是对的，但为了稳妥，我们加上 0.001 的微小偏移
-                depth = distY + radius+0.001f; // 推出表面 + 半径
+                depth = distY + radius; // 推出表面 + 半径
             }
             else if (distX < distZ)
             {

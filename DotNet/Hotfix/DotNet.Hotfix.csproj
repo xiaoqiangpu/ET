@@ -45,6 +45,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Client\Test\" />
+      <Folder Include="Share\LockStep\Physics\" />
     </ItemGroup>
 
 </Project>

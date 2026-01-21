@@ -35,9 +35,9 @@ namespace ET.Client
                 GlobalComponent globalComponent = root.GetComponent<GlobalComponent>();
                 GameObject unitGo = UnityEngine.Object.Instantiate(prefab, globalComponent.Unit, true);
                 unitGo.transform.position = lsUnit.Position.ToVector();
-
+                Log.Info($"pxq--Client--LSUnitViewComponent--初始化表现层[玩家]--lsUnit InstanceID:{lsUnit.InstanceId}--InitPos:{unitGo.transform.position}--");
                 LSUnitView lsUnitView = self.AddChildWithId<LSUnitView, GameObject>(lsUnit.Id, unitGo);
-                lsUnitView.AddComponent<LSAnimatorComponent>();
+                // lsUnitView.AddComponent<LSAnimatorComponent>();
                 Log.Info($"pxq---帧同步--加载实体单元--例如玩家:{unitGo.name}");
             }
         }

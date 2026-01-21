@@ -121,8 +121,7 @@ namespace ET
         [LSEntitySystem]
         private static void LSUpdate(this ET.LSPhysicsWorld self)
         {
-            FP dt = LSConstValue.UpdateInterval;
-
+            FP dt = LSConstValue.UpdateInterval / 1000f;
             // ==========================================================
             // 1. 预处理：解包 EntityRef 并筛选有效对象
             // ==========================================================
@@ -165,13 +164,13 @@ namespace ET
                     // 应用重力
                     if (rb.UseGravity) rb.Velocity += self.Gravity * dt;
                     // 应用阻力
-                    if (rb.Drag > 0) rb.Velocity *= (1 - rb.Drag * dt);
-
-                    // 【新增】最大终端速度限制 (防止无限下落或飞天)
-                    // 假设最大下落速度 20m/s，最大水平速度 20m/s
-                    rb.Velocity.x = TSMath.Clamp(rb.Velocity.x, -20, 20);
-                    rb.Velocity.y = TSMath.Clamp(rb.Velocity.y, -20, 20);
-                    rb.Velocity.z = TSMath.Clamp(rb.Velocity.z, -20, 20);
+                    if (rb.Drag > 0) rb.Velocity *= (FP.One - rb.Drag * dt);
+                    // 【新增安全锁】限制最大速度为 20m/s (相当于 72km/h)
+                    // 没有任何正常的游戏逻辑需要比这更快
+                    FP maxSpeed = 20;
+                    rb.Velocity.x = TSMath.Clamp(rb.Velocity.x, -1 * maxSpeed, maxSpeed);
+                    rb.Velocity.y = TSMath.Clamp(rb.Velocity.y, -1 * maxSpeed, maxSpeed);
+                    rb.Velocity.z = TSMath.Clamp(rb.Velocity.z, -1 * maxSpeed, maxSpeed);
 
                     // 移动
                     lsUnit.Position += rb.Velocity * dt;
@@ -228,52 +227,38 @@ namespace ET
             bool p1Move = rb1 != null && !rb1.IsKinematic;
             bool p2Move = rb2 != null && !rb2.IsKinematic;
 
-            // [安全锁] 防止深度计算错误导致瞬移飞天
-            // 如果一帧穿透超过 1米，说明逻辑错了，强制限制住
-            if (depth > 1)
-            {
-                // Log.Warning($"[Physics] 异常穿透深度: {depth}，已钳制。");
-                depth = 1;
-            }
+            // [核心修复 1] 引入 Slop (容错深度)
+            // 允许 0.01m 的穿透不进行修正，这能消除微小抖动和不断上升的问题
+            FP slop       = 0.01f;
+            FP correction = TSMath.Max(depth - slop, 0);
 
-            // 缓冲距离，防止浮点抖动
-            FP correction = TSMath.Max(depth - 0.001f, 0);
+            // 如果修正量为0，说明陷得不深，不需要推，直接退出
+            if (correction == 0) return;
 
-            // move 向量指向 c1 (因为 normal 指向 c1)
-            TSVector move = normal * correction;
+            // [核心修复 2] 百分比修正 (Baumgarte Stabilization)
+            // 不要一帧把人推出去 100%，而是推 20%~80%，让它慢慢浮出来
+            // 配合 Slop，这能让物理表现极其稳定
+            // 0.2f ~ 0.8f 都可以，建议 0.5f
+            TSVector move = normal * (correction * 0.5f);
 
-            // --- 情况 1: c1 是玩家(动)，c2 是墙(不动) ---
+            // --- 1. Player (c1) 撞 Wall (c2) ---
             if (p1Move && !p2Move)
             {
-                // Move 指向 c1，所以直接加给 c1，把它推出来
                 ApplyPos(u1, move);
 
-                // [消除速度]
-                // Normal 指向 c1。如果 c1 的速度是迎面撞墙（与 Normal 夹角 > 90度，Dot < 0），则消除分量
-                FP velDot = TSVector.Dot(rb1.Velocity, normal);
-                if (velDot < 0)
-                {
-                    rb1.Velocity -= normal * velDot;
-                }
+                // 消除速度 (保留)
+                FP dot = TSVector.Dot(rb1.Velocity, normal);
+                if (dot < 0) rb1.Velocity -= normal * dot;
             }
-            // --- 情况 2: c1 是墙(不动)，c2 是玩家(动) ---
+            // --- 2. Wall (c1) 撞 Player (c2) ---
             else if (!p1Move && p2Move)
             {
-                // Move 指向 c1 (墙)。我们需要推 c2。
-                // 所以给 c2 施加 -move (反方向)
-                ApplyPos(u2, -1*move);
+                ApplyPos(u2, -1 * move);
 
-                // [消除速度]
-                // Normal 指向 c1 (墙)。-Normal 指向 c2 (玩家)。
-                // 玩家撞墙，意味着玩家速度方向与 -Normal 相反。
-                // 即玩家速度与 Normal 同向 (Dot > 0)。
-                FP velDot = TSVector.Dot(rb2.Velocity, normal);
-                if (velDot > 0)
-                {
-                    rb2.Velocity -= normal * velDot;
-                }
+                FP dot = TSVector.Dot(rb2.Velocity, normal);
+                if (dot > 0) rb2.Velocity -= normal * dot;
             }
-            // --- 情况 3: 互撞 ---
+            // --- 3. 互撞 ---
             else if (p1Move && p2Move)
             {
                 ApplyPos(u1, move * 0.5f);
