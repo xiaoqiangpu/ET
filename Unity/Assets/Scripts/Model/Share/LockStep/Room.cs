@@ -20,7 +20,8 @@ namespace ET
         public FrameBuffer FrameBuffer { get; set; }
 
         /// <summary>
-        /// 计算fixedTime，fixedTime在客户端是动态调整的，会做时间膨胀缩放
+        /// 固定时间计数器
+        /// fixedTime在客户端是动态调整的，会做时间膨胀缩放
         /// </summary>
         public FixedTimeCounter FixedTimeCounter { get; set; }
 

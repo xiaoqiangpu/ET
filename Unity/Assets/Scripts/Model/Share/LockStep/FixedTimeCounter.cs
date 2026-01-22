@@ -2,8 +2,17 @@ namespace ET
 {
     public class FixedTimeCounter: Object
     {
+        /// <summary>
+        /// 开始时间
+        /// </summary>
         private long startTime;
+        /// <summary>
+        /// 开始帧率
+        /// </summary>
         private int startFrame;
+        /// <summary>
+        /// 时间间隔
+        /// </summary>
         public int Interval { get; private set; }
 
         public FixedTimeCounter(long startTime, int startFrame, int interval)

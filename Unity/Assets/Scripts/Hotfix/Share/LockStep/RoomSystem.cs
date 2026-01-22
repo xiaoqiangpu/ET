@@ -15,7 +15,7 @@ namespace ET
         
         public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime, int frame = -1)
         {
-            Log.Info($"pxq--Room.Init--name:{self.Name}--{unitInfos.ToJson()}---");
+            Log.Info($"pxq--Room.Init--name:{self.Name}--unitInfos：{unitInfos.ToJson()}---startTime：{startTime}");
             
             self.StartTime = startTime;
             self.AuthorityFrame = frame;
@@ -41,6 +41,7 @@ namespace ET
 
         public static void Update(this Room self, OneFrameInputs oneFrameInputs)
         {
+            Log.Info($"pxq--Client--RoomSystem--Update--oneFrameInputs：{oneFrameInputs.ToJson()}");
             LSWorld lsWorld = self.LSWorld;
             // 设置输入到每个LSUnit身上
             LSUnitComponent unitComponent = lsWorld.GetComponent<LSUnitComponent>();
@@ -86,7 +87,11 @@ namespace ET
             self.FrameBuffer.SetHash(frame, hash);
         }
 
-        // 记录需要存档的数据
+        /// <summary>
+        /// 记录需要存档的数据
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="frame"></param>
         public static void Record(this Room self, int frame)
         {
             if (frame > self.AuthorityFrame)
