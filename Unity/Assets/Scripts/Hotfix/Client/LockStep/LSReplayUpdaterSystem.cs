@@ -21,7 +21,7 @@ namespace ET.Client
             Room room = self.GetParent<Room>();
             Fiber fiber = self.Fiber();
             long timeNow = TimeInfo.Instance.ServerNow();
-
+            
             int i = 0;
             while (true)
             {
@@ -38,7 +38,7 @@ namespace ET.Client
                 ++room.AuthorityFrame;
 
                 OneFrameInputs oneFrameInputs = room.Replay.FrameInputs[room.AuthorityFrame];
-
+                Log.Info($"pxq--LSReplayUpdaterSystem--Update--触发回滚逻辑--oneFrameInputs：{oneFrameInputs.ToJson()}");
                 room.Update(oneFrameInputs);
                 room.SpeedMultiply = ++i;
 

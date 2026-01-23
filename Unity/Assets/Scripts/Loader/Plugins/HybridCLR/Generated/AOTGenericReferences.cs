@@ -48,6 +48,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// ET.AwakeSystem<object,object,int>
 	// ET.AwakeSystem<object,object,object>
 	// ET.AwakeSystem<object,object>
+	// ET.AwakeSystem<object,uint>
 	// ET.AwakeSystem<object>
 	// ET.DestroySystem<object>
 	// ET.DoubleMap<object,long>
@@ -78,12 +79,14 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// ET.IAwake<object,object,object>
 	// ET.IAwake<object,object>
 	// ET.IAwake<object>
+	// ET.IAwake<uint>
 	// ET.IAwakeSystem<int,int>
 	// ET.IAwakeSystem<int>
 	// ET.IAwakeSystem<object,int>
 	// ET.IAwakeSystem<object,object,object>
 	// ET.IAwakeSystem<object,object>
 	// ET.IAwakeSystem<object>
+	// ET.IAwakeSystem<uint>
 	// ET.LateUpdateSystem<object>
 	// ET.ListComponent<Unity.Mathematics.float3>
 	// ET.ListComponent<object>
@@ -203,9 +206,12 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// MemoryPack.Formatters.ArrayFormatter<object>
 	// MemoryPack.Formatters.DictionaryFormatter<int,long>
 	// MemoryPack.Formatters.DictionaryFormatter<long,ET.LSInput>
+	// MemoryPack.Formatters.HashSetFormatter<ET.EntityRef<object>>
 	// MemoryPack.Formatters.ListFormatter<Unity.Mathematics.float3>
 	// MemoryPack.Formatters.ListFormatter<long>
 	// MemoryPack.Formatters.ListFormatter<object>
+	// MemoryPack.Formatters.UnmanagedFormatter<int>
+	// MemoryPack.IMemoryPackFormatter<ET.EntityRef<object>>
 	// MemoryPack.IMemoryPackFormatter<Unity.Mathematics.float3>
 	// MemoryPack.IMemoryPackFormatter<byte>
 	// MemoryPack.IMemoryPackFormatter<long>
@@ -213,6 +219,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// MemoryPack.IMemoryPackable<ET.LSInput>
 	// MemoryPack.IMemoryPackable<object>
 	// MemoryPack.MemoryPackFormatter<ET.LSInput>
+	// MemoryPack.MemoryPackFormatter<int>
 	// MemoryPack.MemoryPackFormatter<object>
 	// MongoDB.Bson.Serialization.IBsonSerializer<object>
 	// MongoDB.Bson.Serialization.Serializers.SerializerBase<ET.LSInput>
@@ -844,6 +851,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// object ET.Entity.AddComponentWithId<object,object,object,object>(long,object,object,object,bool)
 		// object ET.Entity.AddComponentWithId<object,object,object>(long,object,object,bool)
 		// object ET.Entity.AddComponentWithId<object,object>(long,object,bool)
+		// object ET.Entity.AddComponentWithId<object,uint>(long,uint,bool)
 		// object ET.Entity.AddComponentWithId<object>(long,bool)
 		// object ET.Entity.GetChild<object>(long)
 		// object ET.Entity.GetComponent<object>()
@@ -855,6 +863,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// System.Void ET.EntitySystemSingleton.Awake<object,object,object>(ET.Entity,object,object,object)
 		// System.Void ET.EntitySystemSingleton.Awake<object,object>(ET.Entity,object,object)
 		// System.Void ET.EntitySystemSingleton.Awake<object>(ET.Entity,object)
+		// System.Void ET.EntitySystemSingleton.Awake<uint>(ET.Entity,uint)
 		// long ET.EnumHelper.FromString<long>(string)
 		// System.Void ET.EventSystem.Invoke<ET.NetComponentOnRead>(long,ET.NetComponentOnRead)
 		// System.Void ET.EventSystem.Publish<object,ET.ChangePosition>(object,ET.ChangePosition)
@@ -887,8 +896,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// MemoryPack.MemoryPackFormatter<long> MemoryPack.MemoryPackFormatterProvider.GetFormatter<long>()
 		// MemoryPack.MemoryPackFormatter<object> MemoryPack.MemoryPackFormatterProvider.GetFormatter<object>()
 		// bool MemoryPack.MemoryPackFormatterProvider.IsRegistered<ET.LSInput>()
+		// bool MemoryPack.MemoryPackFormatterProvider.IsRegistered<int>()
 		// bool MemoryPack.MemoryPackFormatterProvider.IsRegistered<object>()
 		// System.Void MemoryPack.MemoryPackFormatterProvider.Register<ET.LSInput>(MemoryPack.MemoryPackFormatter<ET.LSInput>)
+		// System.Void MemoryPack.MemoryPackFormatterProvider.Register<int>(MemoryPack.MemoryPackFormatter<int>)
 		// System.Void MemoryPack.MemoryPackFormatterProvider.Register<object>(MemoryPack.MemoryPackFormatter<object>)
 		// System.Void MemoryPack.MemoryPackReader.DangerousReadUnmanagedArray<byte>(byte[]&)
 		// byte[] MemoryPack.MemoryPackReader.DangerousReadUnmanagedArray<byte>()
@@ -899,7 +910,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// object MemoryPack.MemoryPackReader.ReadPackable<object>()
 		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<ET.ActorId>(ET.ActorId&)
 		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<ET.LSInput>(ET.LSInput&)
+		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<TrueSync.FP,long,TrueSync.FP,byte,byte>(TrueSync.FP&,long&,TrueSync.FP&,byte&,byte&)
+		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<TrueSync.FP>(TrueSync.FP&)
 		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<TrueSync.TSQuaternion>(TrueSync.TSQuaternion&)
+		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<TrueSync.TSVector,long,byte,byte,TrueSync.FP,TrueSync.FP,TrueSync.TSVector,TrueSync.TSVector,TrueSync.TSVector,TrueSync.TSVector>(TrueSync.TSVector&,long&,byte&,byte&,TrueSync.FP&,TrueSync.FP&,TrueSync.TSVector&,TrueSync.TSVector&,TrueSync.TSVector&,TrueSync.TSVector&)
 		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<TrueSync.TSVector>(TrueSync.TSVector&)
 		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<Unity.Mathematics.float3>(Unity.Mathematics.float3&)
 		// System.Void MemoryPack.MemoryPackReader.ReadUnmanaged<Unity.Mathematics.quaternion,int>(Unity.Mathematics.quaternion&,int&)
@@ -936,6 +950,9 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// MemoryPack.IMemoryPackFormatter<object> MemoryPack.MemoryPackWriter.GetFormatter<object>()
 		// System.Void MemoryPack.MemoryPackWriter.WritePackable<object>(object&)
 		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<ET.LSInput>(ET.LSInput&)
+		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<TrueSync.FP,long,TrueSync.FP,byte,byte>(TrueSync.FP&,long&,TrueSync.FP&,byte&,byte&)
+		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<TrueSync.TSVector,long,byte,byte,TrueSync.FP,TrueSync.FP,TrueSync.TSVector,TrueSync.TSVector,TrueSync.TSVector,TrueSync.TSVector>(TrueSync.TSVector&,long&,byte&,byte&,TrueSync.FP&,TrueSync.FP&,TrueSync.TSVector&,TrueSync.TSVector&,TrueSync.TSVector&,TrueSync.TSVector&)
+		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<TrueSync.TSVector>(TrueSync.TSVector&)
 		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<Unity.Mathematics.quaternion,int>(Unity.Mathematics.quaternion&,int&)
 		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<int>(int&)
 		// System.Void MemoryPack.MemoryPackWriter.WriteUnmanaged<long,ET.LSInput>(long&,ET.LSInput&)
@@ -960,6 +977,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// System.Void MemoryPack.MemoryPackWriter.WriteValue<byte>(byte&)
 		// System.Void MemoryPack.MemoryPackWriter.WriteValue<long>(long&)
 		// System.Void MemoryPack.MemoryPackWriter.WriteValue<object>(object&)
+		// string MongoDB.Bson.BsonExtensionMethods.ToJson<ET.LSInput>(ET.LSInput,MongoDB.Bson.IO.JsonWriterSettings,MongoDB.Bson.Serialization.IBsonSerializer<ET.LSInput>,System.Action<MongoDB.Bson.Serialization.BsonSerializationContext.Builder>,MongoDB.Bson.Serialization.BsonSerializationArgs)
 		// string MongoDB.Bson.BsonExtensionMethods.ToJson<object>(object,MongoDB.Bson.IO.JsonWriterSettings,MongoDB.Bson.Serialization.IBsonSerializer<object>,System.Action<MongoDB.Bson.Serialization.BsonSerializationContext.Builder>,MongoDB.Bson.Serialization.BsonSerializationArgs)
 		// object MongoDB.Bson.Serialization.BsonSerializer.Deserialize<object>(MongoDB.Bson.IO.IBsonReader,System.Action<MongoDB.Bson.Serialization.BsonDeserializationContext.Builder>)
 		// object MongoDB.Bson.Serialization.BsonSerializer.Deserialize<object>(string,System.Action<MongoDB.Bson.Serialization.BsonDeserializationContext.Builder>)
@@ -980,6 +998,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// object& System.Runtime.CompilerServices.Unsafe.AsRef<object>(object&)
 		// ET.ActorId System.Runtime.CompilerServices.Unsafe.ReadUnaligned<ET.ActorId>(byte&)
 		// ET.LSInput System.Runtime.CompilerServices.Unsafe.ReadUnaligned<ET.LSInput>(byte&)
+		// TrueSync.FP System.Runtime.CompilerServices.Unsafe.ReadUnaligned<TrueSync.FP>(byte&)
 		// TrueSync.TSQuaternion System.Runtime.CompilerServices.Unsafe.ReadUnaligned<TrueSync.TSQuaternion>(byte&)
 		// TrueSync.TSVector System.Runtime.CompilerServices.Unsafe.ReadUnaligned<TrueSync.TSVector>(byte&)
 		// Unity.Mathematics.float3 System.Runtime.CompilerServices.Unsafe.ReadUnaligned<Unity.Mathematics.float3>(byte&)
@@ -990,6 +1009,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// uint System.Runtime.CompilerServices.Unsafe.ReadUnaligned<uint>(byte&)
 		// int System.Runtime.CompilerServices.Unsafe.SizeOf<ET.ActorId>()
 		// int System.Runtime.CompilerServices.Unsafe.SizeOf<ET.LSInput>()
+		// int System.Runtime.CompilerServices.Unsafe.SizeOf<TrueSync.FP>()
 		// int System.Runtime.CompilerServices.Unsafe.SizeOf<TrueSync.TSQuaternion>()
 		// int System.Runtime.CompilerServices.Unsafe.SizeOf<TrueSync.TSVector>()
 		// int System.Runtime.CompilerServices.Unsafe.SizeOf<Unity.Mathematics.float3>()
@@ -1000,6 +1020,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// int System.Runtime.CompilerServices.Unsafe.SizeOf<uint>()
 		// System.Void System.Runtime.CompilerServices.Unsafe.WriteUnaligned<ET.ActorId>(byte&,ET.ActorId)
 		// System.Void System.Runtime.CompilerServices.Unsafe.WriteUnaligned<ET.LSInput>(byte&,ET.LSInput)
+		// System.Void System.Runtime.CompilerServices.Unsafe.WriteUnaligned<TrueSync.FP>(byte&,TrueSync.FP)
 		// System.Void System.Runtime.CompilerServices.Unsafe.WriteUnaligned<TrueSync.TSQuaternion>(byte&,TrueSync.TSQuaternion)
 		// System.Void System.Runtime.CompilerServices.Unsafe.WriteUnaligned<TrueSync.TSVector>(byte&,TrueSync.TSVector)
 		// System.Void System.Runtime.CompilerServices.Unsafe.WriteUnaligned<Unity.Mathematics.float3>(byte&,Unity.Mathematics.float3)

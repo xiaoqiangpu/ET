@@ -33,14 +33,14 @@ namespace ET.Server
             }
             //获取这一帧的最终输入
             OneFrameInputs oneFrameInputs = self.GetOneFrameMessage(frame);
-            
-            Log.Info($"pxq--LSServerUpdate--RoomName:{room.Name}--room.PlayerIds:{room.PlayerIds.ToJson()}--frame:{frame}--oneFrameInputs:{oneFrameInputs.ToJson()}");
-            
             ++room.AuthorityFrame;  //更新服务器权威帧号
             //准备广播包
             //创建一个输入帧数据，并将这一帧最终输入数据拷贝进去
             OneFrameInputs sendInput = OneFrameInputs.Create();
             oneFrameInputs.CopyTo(sendInput);
+            
+            Log.Info($"pxq--LSServerUpdate--RoomName:{room.Name}--room.PlayerIds:{room.PlayerIds.ToJson()}--frame:{frame}--oneFrameInputs:{sendInput.ToJson()}");
+            
             //将这一帧的权威输入广播给房间内的所有客户端
             RoomMessageHelper.BroadCast(room, sendInput);
             //服务器端同步更新这一帧的输入逻辑

@@ -29,8 +29,12 @@ namespace TrueSync {
         [MemoryPackInclude]
         private int mti = N + 1;
 
+        // [MemoryPackConstructor]
+        // private TSRandom() {
+        // }
+        
         [MemoryPackConstructor]
-        private TSRandom() {
+        public TSRandom() {
         }
 
         private TSRandom(int seed) {

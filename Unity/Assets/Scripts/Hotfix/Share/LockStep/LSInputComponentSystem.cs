@@ -44,10 +44,11 @@ namespace ET
             LSRigidBody rb = lsUnit.GetComponent<LSRigidBody>();
             if(rb==null) return;
             
-            // Log.Info($"pxq--LSInputComponentSystem--LSUpdate--lsUnit Id:{lsUnit.Id}--LsUnit Pos:{lsUnit.Position.ToString()}");
+            Log.Info($"pxq--LSInputComponentSystem--1--LSUpdate--lsUnit Id:{lsUnit.Id}--LsUnit Pos:{self.LSInput.V.ToString()}");
    
             TSVector2 inputDir = self.LSInput.V;
             FP        speed    = 6; 
+            Log.Info($"pxq--LSInputComponentSystem--2--LSUpdate--lsUnit Id:{lsUnit.Id}--LsUnit Pos:{self.LSInput.V.ToString()}--inputDir.LengthSquared()：{inputDir.LengthSquared().ToString()}");
             if (inputDir.LengthSquared() > 0.0001f)
             {
                 //只修改水平速度 (Velocity X/Z),Velocity.Y (重力在管)
@@ -55,7 +56,7 @@ namespace ET
                 rb.Velocity.z = inputDir.y * speed;
                 // 更新朝向
                 lsUnit.Forward = new TSVector(inputDir.x, 0, inputDir.y);
-                // Log.Info($"pxq--LSInputComponentSystem--Player--rb.Velocity:{rb.Velocity.ToString()}--unit.Forward:{lsUnit.Forward.ToString()}");
+                Log.Info($"pxq--LSInputComponentSystem--3--LSUpdate--lsUnit Id:{lsUnit.Id}--LsUnit Pos:{self.LSInput.V.ToString()}--inputDir.LengthSquared()：{inputDir.LengthSquared().ToString()}");
             }
             else
             {
@@ -63,8 +64,6 @@ namespace ET
                 rb.Velocity.x = 0;
                 rb.Velocity.z = 0;
             }
-            
-            
         }
         
         #endregion

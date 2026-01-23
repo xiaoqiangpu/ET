@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace ET.Client
+﻿namespace ET.Client
 {
     /// <summary>
     /// 客户端发送消息组件系统 Main Fiber -> Netclient Fiber

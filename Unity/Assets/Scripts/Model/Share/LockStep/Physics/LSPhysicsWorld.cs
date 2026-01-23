@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MemoryPack;
 using MongoDB.Bson.Serialization.Attributes;
 using TrueSync;
 
@@ -9,7 +10,8 @@ namespace ET
     /// 挂在Scene上，单例管理所有物理对象
     /// </summary>
     [ComponentOf(typeof(LSWorld))]
-    public class LSPhysicsWorld:LSEntity,IAwake,ILSUpdate,IDestroy
+    [MemoryPackable]
+    public partial class LSPhysicsWorld:LSEntity,IAwake,ILSUpdate,IDestroy
     {
         /// <summary>
         /// 所有碰撞体
@@ -20,6 +22,7 @@ namespace ET
         /// <summary>
         /// 3D重力
         /// </summary>
+        [MemoryPackOrder(0)]
         public TSVector Gravity = new TSVector(0, -9.81f, 0);
     }
 }

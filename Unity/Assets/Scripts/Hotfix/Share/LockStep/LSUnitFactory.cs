@@ -11,10 +11,10 @@ namespace ET
             Log.Info($"pxq--Share-LSUnit--Init--unitInfo：{unitInfo.ToJson()}");
             LSUnitComponent lsUnitComponent = lsWorld.GetComponent<LSUnitComponent>();
             LSUnit          lsUnit          = lsUnitComponent.AddChildWithId<LSUnit>(unitInfo.PlayerId);
-
+            
             lsUnit.Position = unitInfo.Position;
             lsUnit.Rotation = unitInfo.Rotation;
-
+            
             lsUnit.AddComponent<LSInputComponent>();
 
             //---pxq---AddPhysics-------
