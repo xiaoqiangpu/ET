@@ -73,6 +73,7 @@ namespace ET
 
         public static LSWorld GetLSWorld(this Room self, SceneType sceneType, int frame)
         {
+            Log.Info($"pxq--RoomSystem--GetLSWorld--获取指定帧快照--重建LSWorld--");
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
             LSWorld lsWorld = MemoryPackHelper.Deserialize(typeof(LSWorld), memoryBuffer) as LSWorld;
@@ -83,6 +84,7 @@ namespace ET
 
         private static void SaveLSWorld(this Room self)
         {
+            Log.Info($"pxq--RoomSystem--SaveLSWorld--self.Root().Name:{self.Root().Name}--");
             int frame = self.LSWorld.Frame;
             MemoryBuffer memoryBuffer = self.FrameBuffer.Snapshot(frame);
             memoryBuffer.Seek(0, SeekOrigin.Begin);
@@ -103,6 +105,7 @@ namespace ET
         /// <param name="frame"></param>
         public static void Record(this Room self, int frame)
         {
+            Log.Info($"pxq--RoomSystem--Record--self.Root().Name:{self.Root().Name}--frame:{frame}--");
             if (frame > self.AuthorityFrame)
             {
                 return;

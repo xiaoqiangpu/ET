@@ -13,36 +13,35 @@ namespace ET.Client
             using var _ = input ; // 方法结束时回收消息
             Room room = root.GetComponent<Room>();
             
-            Log.Debug($"OneFrameInputs: {room.AuthorityFrame + 1} {input.ToJson()}");
+            Log.Info($"pxq--OneFrameInputsHandler.Run-1-权威帧: {room.AuthorityFrame}-预测帧：{room.PredictionFrame}-权威Input:{input.ToJson()}--");
                         
             FrameBuffer frameBuffer = room.FrameBuffer;
-
+            
             ++room.AuthorityFrame;
             // 服务端返回的消息比预测的还早
             if (room.AuthorityFrame > room.PredictionFrame)
             {
+                Log.Info($"pxq--OneFrameInputsHandler.Run-2-权威帧:{room.AuthorityFrame}-大于-预测帧：{room.PredictionFrame}---直接使用权威帧--需要追帧/补帧--");
                 OneFrameInputs authorityFrame = frameBuffer.FrameInputs(room.AuthorityFrame);
                 input.CopyTo(authorityFrame);
             }
             else
             {
+                Log.Info($"pxq--OneFrameInputsHandler.Run-3-预测帧:{room.PredictionFrame}-大于-权威帧:{room.AuthorityFrame}--准备校验---");
                 // 服务端返回来的消息，跟预测消息对比
                 OneFrameInputs predictionInput = frameBuffer.FrameInputs(room.AuthorityFrame);
-                // 对比失败有两种可能，
-                // 1 是别人的输入预测失败，这种很正常，
-                // 2 自己的输入对比失败，这种情况是自己发送的消息比服务器晚到了，服务器使用了你的上一次输入
-                // 回滚重新预测的时候，自己的输入不用变化
-                if (input != predictionInput)
+                if (!input.Equals(predictionInput))
                 {
-                    Log.Debug($"frame diff: {predictionInput} {input}");
+                    Log.Info($"pxq--OneFrameInputsHandler.Run-4-校验结果：预测帧:{room.PredictionFrame}-不等于-权威帧:{room.AuthorityFrame}-触发回滚>>>");
                     input.CopyTo(predictionInput);
                     // 回滚到frameBuffer.AuthorityFrame
-                    Log.Debug($"roll back start {room.AuthorityFrame}");
+                    Log.Info($"pxq--OneFrameInputsHandler.Run--Rollback-start-frame:{room.AuthorityFrame}");
                     LSClientHelper.Rollback(room, room.AuthorityFrame);
-                    Log.Debug($"roll back finish {room.AuthorityFrame}");
+                    Log.Info($"pxq--OneFrameInputsHandler.Run--Rollback-finish-frame:{room.AuthorityFrame}");
                 }
                 else // 对比成功
                 {
+                    Log.Info($"pxq--OneFrameInputsHandler.Run-5-校验结果：预测帧:{room.PredictionFrame}-不等于-权威帧:{room.AuthorityFrame}-预测成功--存档>>>");
                     room.Record(room.AuthorityFrame);
                     room.SendHash(room.AuthorityFrame);
                 }

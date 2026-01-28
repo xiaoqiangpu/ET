@@ -8,18 +8,17 @@ namespace ET.Client
     public static partial class LSClientHelper
     {
         /// <summary>
-        /// 运行回滚系统
+        /// 指定
         /// </summary>
         /// <param name="entity"></param>
         public static void RunLSRollbackSystem(Entity entity)
         {
+            Log.Info($"pxq--LSClientHelper--RunLSRollbackSystem--指定的Entity InstanceId：{entity.InstanceId}-运行回放系统");
             if (entity is LSEntity)
             {
                 return;
             }
-            
             LSEntitySystemSingleton.Instance.LSRollback(entity);
-            
             if (entity.ComponentsCount() > 0)
             {
                 foreach (var kv in entity.Components)
@@ -44,16 +43,17 @@ namespace ET.Client
         /// <param name="frame"></param>
         public static void Rollback(Room room, int frame)
         {
+            Log.Info($"pxq--LSClientHelper--Rollback-执行回滚逻辑--frame:{frame}--");
             room.LSWorld.Dispose();
             FrameBuffer frameBuffer = room.FrameBuffer;
             
             // 回滚
             room.LSWorld = room.GetLSWorld(SceneType.LockStepClient, frame);
             OneFrameInputs authorityFrameInput = frameBuffer.FrameInputs(frame);
+            Log.Info($"pxq--LSClientHelper--Rollback-执行回滚逻辑-- 权威帧frame:{frame}-输入：{authorityFrameInput.ToJson()}");
             // 执行AuthorityFrame
             room.Update(authorityFrameInput);
             room.SendHash(frame);
-
             
             // 重新执行预测的帧
             for (int i = room.AuthorityFrame + 1; i <= room.PredictionFrame; ++i)
@@ -66,8 +66,14 @@ namespace ET.Client
             RunLSRollbackSystem(room);
         }
         
+        /// <summary>
+        /// 向服务器发送指定帧号校验输入
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="frame"></param>
         public static void SendHash(this Room self, int frame)
         {
+            Log.Info($"pxq--LSClientHelper--SendHash-校验指定帧-frame:{frame}-输入-");
             if (frame > self.AuthorityFrame)
             {
                 return;

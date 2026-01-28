@@ -18,6 +18,7 @@ namespace ET
         /// 使用EntityRef包装引用，规避直接使用Entity报错
         /// </summary>
         [BsonIgnore] //物理世界运行时列表通常不需要序列化存储
+        [MemoryPackIgnore]
         public HashSet<EntityRef<LSCollider>> Colliders = new();
         /// <summary>
         /// 3D重力
