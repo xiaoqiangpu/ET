@@ -8,6 +8,7 @@ namespace ET
     // C:NetClient-客户端网络纤程
     // R:Realm网关负责均衡器（登录鉴权服务器）
     // G:网关服务器
+    // M:Map
     [MemoryPackable]
     [Message(OuterMessage.HttpGetRouterResponse)]
     public partial class HttpGetRouterResponse : MessageObject
