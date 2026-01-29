@@ -206,12 +206,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// MemoryPack.Formatters.ArrayFormatter<object>
 	// MemoryPack.Formatters.DictionaryFormatter<int,long>
 	// MemoryPack.Formatters.DictionaryFormatter<long,ET.LSInput>
-	// MemoryPack.Formatters.HashSetFormatter<ET.EntityRef<object>>
 	// MemoryPack.Formatters.ListFormatter<Unity.Mathematics.float3>
 	// MemoryPack.Formatters.ListFormatter<long>
 	// MemoryPack.Formatters.ListFormatter<object>
 	// MemoryPack.Formatters.UnmanagedFormatter<int>
-	// MemoryPack.IMemoryPackFormatter<ET.EntityRef<object>>
 	// MemoryPack.IMemoryPackFormatter<Unity.Mathematics.float3>
 	// MemoryPack.IMemoryPackFormatter<byte>
 	// MemoryPack.IMemoryPackFormatter<long>

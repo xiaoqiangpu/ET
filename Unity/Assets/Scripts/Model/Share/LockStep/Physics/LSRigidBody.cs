@@ -8,7 +8,7 @@ namespace ET
     /// </summary>
     [ComponentOf(typeof(LSUnit))]
     [MemoryPackable]
-    public partial class LSRigidBody : LSEntity, IAwake, IDestroy
+    public partial class LSRigidBody : LSEntity, IAwake, IDestroy,ISerializeToEntity
     {
         /// <summary>
         /// 线性速度

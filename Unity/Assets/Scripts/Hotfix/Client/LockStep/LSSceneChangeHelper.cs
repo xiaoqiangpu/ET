@@ -54,6 +54,7 @@ namespace ET.Client
         // 场景切换协程
         public static async ETTask SceneChangeToReconnect(Scene root, G2C_Reconnect message)
         {
+            Log.Info($"pxq--LSSceneChangeHelper-场景改变->重连--message：{message.ToJson()}");
             root.RemoveComponent<Room>();
 
             Room room = root.AddComponent<Room>();

@@ -5,6 +5,7 @@ namespace ET.Client
     /// <summary>
     /// 帧同步-回放处理
     /// </summary>
+    [FriendOf(typeof(LSPhysicsWorld))]
     public static partial class LSClientHelper
     {
         /// <summary>
@@ -49,6 +50,14 @@ namespace ET.Client
             
             // 回滚
             room.LSWorld = room.GetLSWorld(SceneType.LockStepClient, frame);
+            
+            //重建Collider引用映射
+            LSPhysicsWorld physicsWorld = room.LSWorld.GetComponent<LSPhysicsWorld>();
+            if (physicsWorld != null)
+            {
+                physicsWorld.Rebuild();
+            }
+            
             OneFrameInputs authorityFrameInput = frameBuffer.FrameInputs(frame);
             Log.Info($"pxq--LSClientHelper--Rollback-执行回滚逻辑-- 权威帧frame:{frame}-输入：{authorityFrameInput.ToJson()}");
             // 执行AuthorityFrame
@@ -63,8 +72,10 @@ namespace ET.Client
                 room.Update(oneFrameInputs);
             }
             
+            
             RunLSRollbackSystem(room);
         }
+        
         
         /// <summary>
         /// 向服务器发送指定帧号校验输入

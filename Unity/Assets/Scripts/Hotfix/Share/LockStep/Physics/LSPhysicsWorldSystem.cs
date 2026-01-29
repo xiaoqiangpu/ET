@@ -16,6 +16,32 @@ namespace ET
         {
         }
 
+        
+        /// <summary>
+        /// 核心方法：回滚后手动调用，重建物理世界对 Collider 的引用
+        /// </summary>
+        public static void Rebuild(this LSPhysicsWorld self)
+        {
+            self.Colliders.Clear();
+            // 获取 LSWorld 下的 UnitComponent
+            LSUnitComponent unitComponent = self.GetParent<LSWorld>().GetComponent<LSUnitComponent>();
+            if (unitComponent == null) return;
+
+            // 遍历所有单位，把带碰撞体的搜集起来
+            foreach (var kv in unitComponent.Children)
+            {
+                LSUnit unit = kv.Value as LSUnit;
+                if (unit == null) continue;
+            
+                LSCollider collider = unit.GetComponent<LSCollider>();
+                if (collider != null)
+                {
+                    self.Colliders.Add(collider);
+                }
+            }
+            Log.Info($"pxq--Physics World Rebuilt. Colliders count: {self.Colliders.Count}");
+        }
+        
         #region OldCode--Update
 
         // [EntitySystem]

@@ -3,7 +3,6 @@
   <assembly fullname="MemoryPack">
     <type fullname="MemoryPack.Formatters.ArrayFormatter`1" preserve="all" />
     <type fullname="MemoryPack.Formatters.DictionaryFormatter`2" preserve="all" />
-    <type fullname="MemoryPack.Formatters.HashSetFormatter`1" preserve="all" />
     <type fullname="MemoryPack.Formatters.ListFormatter" preserve="all" />
     <type fullname="MemoryPack.Formatters.ListFormatter`1" preserve="all" />
     <type fullname="MemoryPack.Formatters.UnmanagedFormatter`1" preserve="all" />
