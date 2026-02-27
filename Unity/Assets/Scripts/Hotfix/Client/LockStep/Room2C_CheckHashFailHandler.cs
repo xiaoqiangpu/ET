@@ -11,14 +11,14 @@ namespace ET.Client
             LSWorld serverWorld = MemoryPackHelper.Deserialize(typeof(LSWorld), message.LSWorldBytes, 0, message.LSWorldBytes.Length) as LSWorld;
             using (root.AddChild(serverWorld))
             {
-                Log.Debug($"check hash fail, server: {message.Frame} {serverWorld.ToJson()}");
+                Log.Debug($"pxq--check hash fail, server: {message.Frame} {serverWorld.ToJson()}");
             }
 
             Room room = root.GetComponent<Room>();
             LSWorld clientWorld = room.GetLSWorld(SceneType.LockStepClient, message.Frame);
             using (root.AddChild(clientWorld))
             {
-                Log.Debug($"check hash fail, client: {message.Frame} {clientWorld.ToJson()}");
+                Log.Debug($"pxq--check hash fail, client: {message.Frame} {clientWorld.ToJson()}");
             }
             
             await ETTask.CompletedTask;

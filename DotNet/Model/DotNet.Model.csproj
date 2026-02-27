@@ -43,6 +43,8 @@
             <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
         
+        <Compile Remove="Client\LockStep\Test\**" />
+        
     </ItemGroup> 
     <ItemGroup> 
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -51,7 +53,12 @@
         <ProjectReference Include="..\ThirdParty\DotNet.ThirdParty.csproj" />
     </ItemGroup> 
     <ItemGroup>
-      <Folder Include="Client\LockStep\Test\" />
       <Folder Include="Share\LockStep\Physics\" />
+    </ItemGroup> 
+    <ItemGroup>
+      <EmbeddedResource Remove="Client\LockStep\Test\**" />
+    </ItemGroup> 
+    <ItemGroup>
+      <None Remove="Client\LockStep\Test\**" />
     </ItemGroup> 
 </Project>
